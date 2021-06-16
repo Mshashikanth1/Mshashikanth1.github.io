@@ -4,8 +4,6 @@
 #even funtion needs a number 
 basicarthematic(){
         echo$(($1$2$3))
-	
-	return $(($1$2$3))
 
 
 }
@@ -124,13 +122,12 @@ case $option in
 	7)
 		echo "enter height and base:"
 		read h b
-		c=$((basicarthematic $h * $b))
-		echo $((0.5*c))
+		echo $((0.5*$h*%b))
 		;;
 	8)
 		echo "enter length and breadth:"
 		read l b
-		echo $basicarthematic $l * $b
+		echo $(($l*$b))
 		;;
 	*)
 		echo "unknown"
