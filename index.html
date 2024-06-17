@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mallepally Shashi Kanth Varma - Portfolio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        header {
+            background: #333;
+            color: #fff;
+            padding-top: 30px;
+            min-height: 70px;
+            border-bottom: #77aaff 3px solid;
+        }
+
+        header a {
+            color: #fff;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 16px;
+        }
+
+        header ul {
+            padding: 0;
+            list-style: none;
+        }
+
+        header li {
+            float: right;
+            display: inline;
+            padding: 0 20px 0 20px;
+        }
+
+        .main-header {
+            text-align: center;
+            background: #77aaff;
+            color: #fff;
+            padding: 50px 0;
+        }
+
+        .main-header h1 {
+            margin: 0;
+            font-size: 55px;
+        }
+
+        .main-header p {
+            font-size: 20px;
+        }
+
+        .tabs {
+            overflow: hidden;
+            background: #fff;
+            margin: 20px 0;
+        }
+
+        .tabs button {
+            background-color: #333;
+            color: white;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+            font-size: 17px;
+        }
+
+        .tabs button:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .tabs button.active {
+            background-color: #77aaff;
+            color: white;
+        }
+
+        .tabcontent {
+            display: none;
+            padding: 20px;
+            background: #fff;
+        }
+
+        .tabcontent img {
+            float: left;
+            margin-right: 20px;
+            border-radius: 50%;
+        }
+
+        footer {
+            background: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            margin-top: 20px;
+        }
+
+        .profile-pic {
+            border-radius: 50%;
+            border: 2px solid black;
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="main-header">
+        <div class="container" class="tabcontent"">
+            <img src=" shashi.jpeg" alt="Profile Picture" width="150" class="profile-pic">
+            <h2>Mallepally Shashi Kanth Varma</h2>
+            <p>Software Development Engineer</p>
+
+        </div>
+    </div>
+
+    <div class="tabs">
+        <button class="tablink active" onclick="openTab(event, 'profile')">Profile</button>
+        <button class="tablink" onclick="openTab(event, 'education')">Education</button>
+        <button class="tablink" onclick="openTab(event, 'experience')">Experience</button>
+        <button class="tablink" onclick="openTab(event, 'skills')">Skills</button>
+        <button class="tablink" onclick="openTab(event, 'projects')">Projects</button>
+        <button class="tablink" onclick="openTab(event, 'contact')">Contact</button>
+    </div>
+
+    <div id="profile" class="tabcontent" style="display: block;">
+        <h2>Profile</h2>
+        <p>Software Engineer with experience in enhancing refund and cashback logic in order management systems,
+            implementing order cancellation/confirmation processes, and improving shipment vs payment logic in payment
+            services.</p>
+    </div>
+
+    <div id="education" class="tabcontent">
+        <h2>Education</h2>
+        <p><strong>Institute of Aeronautical Engineering Hyderabad</strong></p>
+        <p>B.Tech in Computer Science Engineering, July 2018 - July 2022</p>
+        <p>CGPA: 8.2</p>
+    </div>
+
+    <div id="experience" class="tabcontent">
+        <h2>Experience</h2>
+        <p><strong>Jsw one platforms</strong> - Software Engineer 1, Mumbai (August 2022 - Present)</p>
+        <ul>
+            <li>Enhanced the refund/cashback logic in the order management system.</li>
+            <li>Implemented the order cancellation/confirmation/revoke of the planned shipments.</li>
+            <li>Improved the shipment vs payment received logic in payment service & buyer ledger, seller ledger in
+                Batua microservice.</li>
+            <li>Developed notification service and API functionalities for interacting payment/order objects in Commerce
+                tools in the payment microservice.</li>
+            <li>Contributed to the credit management & plant supply workflows in the system.</li>
+        </ul>
+        <p><strong>Tvarana</strong> - Netsuite Developer 1, Hyderabad (Jan 2022 - August 2022)</p>
+        <ul>
+            <li>Participated in projects that customized Netsuite for business needs.</li>
+            <li>Implemented custom scripts for mass insert/update/delete of various records and files.</li>
+            <li>Developed dashboards/audit analysis/cost-cutting methods for improving business efficiency.</li>
+        </ul>
+    </div>
+
+    <div id="skills" class="tabcontent">
+        <h2>Skills</h2>
+        <ul>
+            <li>Programming Languages: Java, PostgreSQL, Bash, Python</li>
+            <li>Libraries/Frameworks: Spring Boot, Spring WebFlux, Django</li>
+            <li>Tools/Platforms: Google Cloud Platforms, Amazon Web Services</li>
+            <li>Databases: Postgres, MySQL</li>
+        </ul>
+    </div>
+
+    <div id="projects" class="tabcontent">
+        <h2>Projects / Open-Source</h2>
+        <p><strong>Retrieval Augmented Generation</strong> | <a href="https://github.com/Mshashikanth1/rag">Link</a></p>
+        <p>Python, LLMs, Docker, Pandas, Vector DBs</p>
+        <p>Used an open-source LLM to work with custom data.</p>
+        <p><strong>Social Media Backend</strong> | <a href="https://github.com/Mshashikanth1/SimpleSocialMedia">Link</a>
+        </p>
+        <p>Spring Boot, Java 17, Neo4j, Open Search, Redis, PostgreSQL</p>
+        <p>Simulated functionalities of real social media applications like Twitter and Instagram.</p>
+    </div>
+
+    <div id="contact" class="tabcontent">
+        <h2>Contact</h2>
+        <p>Email: <a href="mailto:shashikanthvarma98@gmail.com">shashikanthvarma98@gmail.com</a></p>
+        <p>Phone: <a href="tel:+916305696351">+91 6305696351</a></p>
+        <p>LinkedIn: <a href="https://www.linkedin.com/in/mallepally-shashi-kanth-varma-82989b258/">Profile</a></p>
+        <p>GitHub: <a href="https://github.com/Mshashikanth1">Profile</a></p>
+        <p>LeetCode: <a href="https://leetcode.com/u/Mshashikanth/">Profile</a></p>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Mallepally Shashi Kanth Varma. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablink");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        // Open the first tab by default
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelector('.tablink').click();
+        });
+    </script>
+</body>
+
+</html>
