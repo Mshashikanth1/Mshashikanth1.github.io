@@ -202,6 +202,14 @@
       text-decoration: none;
       cursor: pointer;
     }
+    
+    /* View Counter Styling */
+    #view-counter {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 16px;
+      color: #0f0;
+    }
   </style>
 </head>
 <body>
@@ -211,6 +219,9 @@
       <h1>Mallepally Shashi Kanth Varma <span class="cursor"></span></h1>
       <p>Software Engineer</p>
     </header>
+    
+    <!-- View Counter -->
+    <div id="view-counter">Loading view counter...</div>
     
     <div class="tabs">
       <button class="tablink active" onclick="openTab(event, 'profile')">&gt; profile</button>
@@ -310,7 +321,7 @@ LeetCode : https://leetcode.com/u/Mshashikanth/
         <img src="https://i.pinimg.com/736x/40/07/a2/4007a2299ec65b3424b9d86b1719b60c.jpg" alt="Goku Ultra Instinct" onclick="openModal(this)" />
         <img src="https://i.redd.it/ixaqyazagw6c1.jpeg" alt="Vegeta Final Flash" onclick="openModal(this)" />
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1qCphzphq7nSH0xLOZOYUv9EaU8szZu0TVg" alt="Kamehameha Meme" onclick="openModal(this)" />
-
+        
         <!-- Programming Memes -->
         <img src="https://blog.zegocloud.com/wp-content/uploads/2024/02/programming-meme-2.jpg" alt="its working" onclick="openModal(this)" />
         <img src="https://blog.zegocloud.com/wp-content/uploads/2024/02/programming-meme-4.jpg" alt="interstellar" onclick="openModal(this)" />
@@ -331,7 +342,6 @@ LeetCode : https://leetcode.com/u/Mshashikanth/
         <img src="https://images.saymedia-content.com/.image/t_share/MTc1MTE0MjQzMTE1NTkxNDky/best-dragon-ball-z-girls.jpg" alt="Dragon Ball Girls" onclick="openModal(this)" />
         <img src="https://static1.cbrimages.com/wordpress/wp-content/uploads/2022/02/Dragon-Ball-Best-Female-Characters-Caulifla-Android-18-Future-Mai.jpg" alt="Female Characters" onclick="openModal(this)" />
         <img src="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2022/07/Launch-with-evil-personality-Dragon-Ball.jpg" alt="Evil Persona" onclick="openModal(this)" />
-
         <!-- Other Anime -->
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbEynE1klkxtYBoUJ-90_Va8y0YeVvDY2ldQ&s" alt="Naruto Uzumaki" onclick="openModal(this)" />
         <img src="https://i.redd.it/oab75sov2pdb1.jpg" alt="Sasuke Uchiha" onclick="openModal(this)" />
@@ -358,10 +368,9 @@ LeetCode : https://leetcode.com/u/Mshashikanth/
       for (i = 0; i < tabcontent.length; i++) {
         tabcontent[i].style.display = "none";
       }
-      tablinks = document.getElementsByClassName("tablink");
-      for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].classList.remove("active");
-      }
+      // Update active button style (if using class "tablink")
+      var btns = document.querySelectorAll(".tabs button");
+      btns.forEach(btn => btn.classList.remove("active"));
       document.getElementById(tabName).style.display = "block";
       evt.currentTarget.classList.add("active");
     }
@@ -372,14 +381,12 @@ LeetCode : https://leetcode.com/u/Mshashikanth/
       var modalImg = document.getElementById("modalImg");
       modal.style.display = "block";
       modalImg.src = imgElement.src;
-      // Stop event propagation so clicking on modal image itself doesn't close modal
       event.stopPropagation();
     }
     
     // Function to close modal
     function closeModal() {
-      var modal = document.getElementById("modal");
-      modal.style.display = "none";
+      document.getElementById("modal").style.display = "none";
     }
     
     // Background Slideshow using anime wallpapers
@@ -389,10 +396,29 @@ LeetCode : https://leetcode.com/u/Mshashikanth/
     var currentWallpaper = 0;
     function changeWallpaper() {
       document.body.style.backgroundImage = wallpapers[currentWallpaper];
-      currentWallpaper = (currentWallpaper + 1) % wallpapers.length;
+      currentWallpaper = (currentWallpaper + 3) % wallpapers.length;
     }
     changeWallpaper();
     setInterval(changeWallpaper, 5000);
+    
+   fetch("https://api.counterapi.dev/v1/mshashikanth1.github.io/visits")
+  .then(response => response.json())
+  .then(data => {
+    document.getElementById("view-counter").innerText =
+      "This page has been viewed " + data.count + " times.";
+    
+    // Increment count by 1
+    fetch("https://api.counterapi.dev/v1/mshashikanth1.github.io/visits/set?count=" + (data.count + 1))
+      .then(postRes => postRes.json())
+      .then(postData => console.log(postData))
+      .catch(err => console.error("Error setting view counter:", err));
+  })
+  .catch(err => console.error("Error fetching view counter:", err));
+
+      
+  
+      
+     
   </script>
 </body>
 </html>
