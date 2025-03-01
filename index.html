@@ -210,6 +210,21 @@
       font-size: 16px;
       color: #0f0;
     }
+    
+    /* Like Counter (Fixed Corner) */
+    #like-counter {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 10px 15px;
+      border: 1px solid #0f0;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      color: #0f0;
+      z-index: 100;
+    }
   </style>
 </head>
 <body>
@@ -321,7 +336,6 @@ LeetCode : https://leetcode.com/u/Mshashikanth/
         <img src="https://i.pinimg.com/736x/40/07/a2/4007a2299ec65b3424b9d86b1719b60c.jpg" alt="Goku Ultra Instinct" onclick="openModal(this)" />
         <img src="https://i.redd.it/ixaqyazagw6c1.jpeg" alt="Vegeta Final Flash" onclick="openModal(this)" />
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1qCphzphq7nSH0xLOZOYUv9EaU8szZu0TVg" alt="Kamehameha Meme" onclick="openModal(this)" />
-        
         <!-- Programming Memes -->
         <img src="https://blog.zegocloud.com/wp-content/uploads/2024/02/programming-meme-2.jpg" alt="its working" onclick="openModal(this)" />
         <img src="https://blog.zegocloud.com/wp-content/uploads/2024/02/programming-meme-4.jpg" alt="interstellar" onclick="openModal(this)" />
@@ -354,7 +368,15 @@ LeetCode : https://leetcode.com/u/Mshashikanth/
     
   </div>
   
-  <!-- Modal for enlarged images -->
+  <!-- Fixed Like Counter in Corner -->
+  <div id="like-counter" onclick="incrementLike()">❤️ Like</div>
+  
+  <!-- Fixed Dislike Counter -->
+<div id="dislike-counter" onclick="incrementDislike()" style="position: fixed; bottom: 20px; right: 120px; background: rgba(0,0,0,0.8); padding: 10px 15px; border: 1px solid #0f0; border-radius: 5px; cursor: pointer; font-size: 16px; color: #0f0; z-index: 100;">
+  👎 Dislike (Loading...)
+</div>
+  
+  <!-- Modal for Enlarged Images -->
   <div id="modal" class="modal" onclick="closeModal()">
     <span class="close" onclick="closeModal()">&times;</span>
     <img class="modal-content" id="modalImg" />
@@ -368,7 +390,6 @@ LeetCode : https://leetcode.com/u/Mshashikanth/
       for (i = 0; i < tabcontent.length; i++) {
         tabcontent[i].style.display = "none";
       }
-      // Update active button style (if using class "tablink")
       var btns = document.querySelectorAll(".tabs button");
       btns.forEach(btn => btn.classList.remove("active"));
       document.getElementById(tabName).style.display = "block";
@@ -401,24 +422,80 @@ LeetCode : https://leetcode.com/u/Mshashikanth/
     changeWallpaper();
     setInterval(changeWallpaper, 5000);
     
-   fetch("https://api.counterapi.dev/v1/mshashikanth1.github.io/visits")
-  .then(response => response.json())
-  .then(data => {
-    document.getElementById("view-counter").innerText =
-      "This page has been viewed " + data.count + " times.";
+    // View Counter using CountAPI for "visits"
+    fetch("https://api.counterapi.dev/v1/mshashikanth1.github.io/visits")
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById("view-counter").innerText =
+          "This page has been viewed " + data.count + " times.";
+        
+        // Increment view count by 1
+        fetch("https://api.counterapi.dev/v1/mshashikanth1.github.io/visits/set?count=" + (data.count + 1))
+          .then(postRes => postRes.json())
+          .then(postData => console.log("Updated view counter:", postData))
+          .catch(err => console.error("Error setting view counter:", err));
+      })
+      .catch(err => console.error("Error fetching view counter:", err));
     
-    // Increment count by 1
-    fetch("https://api.counterapi.dev/v1/mshashikanth1.github.io/visits/set?count=" + (data.count + 1))
-      .then(postRes => postRes.json())
-      .then(postData => console.log(postData))
-      .catch(err => console.error("Error setting view counter:", err));
-  })
-  .catch(err => console.error("Error fetching view counter:", err));
+    // Function to update Like counter display
+    function updateLikeCount() {
+      fetch("https://api.counterapi.dev/v1/mshashikanth1.github.io/likes")
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById("like-counter").innerText = "❤️ Like (" + data.count + ")";
+        })
+        .catch(err => console.error("Error fetching like counter:", err));
+    }
+    
+    // Function to increment Like counter on click
+    function incrementLike() {
+      fetch("https://api.counterapi.dev/v1/mshashikanth1.github.io/likes")
+        .then(response => response.json())
+        .then(data => {
+          fetch("https://api.counterapi.dev/v1/mshashikanth1.github.io/likes/set?count=" + (data.count + 1))
+            .then(res => res.json())
+            .then(postData => {
+              document.getElementById("like-counter").innerText = "❤️ Like (" + postData.count + ")";
+              console.log("Updated like counter:", postData);
+            })
+            .catch(err => console.error("Error setting like counter:", err));
+        })
+        .catch(err => console.error("Error fetching like counter:", err));
+    }
+    
+    // Initialize Like counter on page load
+    updateLikeCount();
+    
+    
+    // Update the dislike counter display
+function updateDislikeCount() {
+  fetch("https://api.counterapi.dev/v1/mshashikanth1.github.io/dislikes")
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById("dislike-counter").innerText = "👎 Dislike (" + data.count + ")";
+    })
+    .catch(err => console.error("Error fetching dislike counter:", err));
+}
 
-      
-  
-      
-     
+// Increment the dislike counter when the button is clicked
+function incrementDislike() {
+  fetch("https://api.counterapi.dev/v1/mshashikanth1.github.io/dislikes")
+    .then(response => response.json())
+    .then(data => {
+      fetch("https://api.counterapi.dev/v1/mshashikanth1.github.io/dislikes/set?count=" + (data.count + 1))
+        .then(res => res.json())
+        .then(postData => {
+          document.getElementById("dislike-counter").innerText = "👎 Dislike (" + postData.count + ")";
+          console.log("Updated dislike counter:", postData);
+        })
+        .catch(err => console.error("Error setting dislike counter:", err));
+    })
+    .catch(err => console.error("Error fetching dislike counter:", err));
+}
+
+// Initialize dislike counter on page load
+updateDislikeCount();
+
   </script>
 </body>
 </html>
