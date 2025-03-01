@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mallepally Shashi Kanth Varma - Terminal Profile</title>
   <style>
-    /* Body with background slideshow setup */
+    /* Base Styles */
     body {
       margin: 0;
       padding: 0;
@@ -50,6 +50,7 @@
     /* Tabs styled as terminal commands */
     .tabs {
       margin-bottom: 20px;
+      text-align: center;
     }
     
     .tabs button {
@@ -102,6 +103,12 @@
       width: 100%;
       border: 2px solid #0f0;
       border-radius: 5px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    
+    .meme-grid img:hover, .badge-grid img:hover {
+      transform: scale(1.05);
     }
     
     /* Terminal Prompt Style for Section Headers */
@@ -120,6 +127,80 @@
       object-fit: cover;
       display: block;
       margin: 0 auto 10px;
+    }
+    
+    /* Responsive Media Queries */
+    @media only screen and (max-width: 600px) {
+      .container {
+        padding: 10px;
+        margin: 10px auto;
+      }
+      header h1 {
+        font-size: 28px;
+      }
+      header p {
+        font-size: 16px;
+      }
+      .tabs button {
+        font-size: 16px;
+        padding: 8px;
+        margin: 5px 5px;
+      }
+      .tabcontent pre {
+        font-size: 16px;
+      }
+      .profile-pic {
+        width: 120px;
+        height: 120px;
+      }
+    }
+    
+    /* Modal Styles */
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.9);
+      padding-top: 60px;
+    }
+    
+    .modal-content {
+      margin: auto;
+      display: block;
+      max-width: 90%;
+      max-height: 80%;
+    }
+    
+    .modal-content, .close {
+      animation: fadeIn 0.3s;
+    }
+    
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+    
+    .close {
+      position: absolute;
+      top: 30px;
+      right: 35px;
+      color: #f1f1f1;
+      font-size: 40px;
+      font-weight: bold;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+    
+    .close:hover,
+    .close:focus {
+      color: #bbb;
+      text-decoration: none;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -150,15 +231,15 @@ Software Engineer
       </pre>
       <p class="prompt" style="margin-top:10px;">LC Badges:</p>
       <div class="badge-grid">
-        <img src="https://github.com/Mshashikanth1/README/assets/57630057/f0b76458-4a60-4343-93f0-21351a924f2a" alt="LC Badge 1" />
-        <img src="https://github.com/Mshashikanth1/README/assets/57630057/44f2cde8-b9b0-41c6-865e-f52b2cae72c0" alt="LC Badge 2" />
-        <img src="https://github.com/Mshashikanth1/leet-code/assets/57630057/90391a87-487b-44b0-9f22-46784a8319cc" alt="LC Badge 3" />
-        <img src="https://github.com/Mshashikanth1/leet-code/assets/57630057/50eed98f-4e5b-4927-b49f-516a6815a0a3" alt="LC Badge 4" />
-        <img src="https://github.com/Mshashikanth1/leet-code/assets/57630057/ebd3efb2-f8ea-4779-82d4-2cd79c40d13d" alt="LC Badge 5" />
-        <img src="https://github.com/Mshashikanth1/leet-code/assets/57630057/ba91a4c6-a361-4ef6-8266-a5027a2810bc" alt="LC Badge 6" />
-        <img src="https://github.com/Mshashikanth1/leet-code/assets/57630057/aba9b9d5-aa1b-45e6-8043-2f5e8670ce09" alt="LC Badge 7" />
-        <img src="https://github.com/Mshashikanth1/leet-code/assets/57630057/86a7f4c9-c4c9-45df-9910-551bce5236a1" alt="LC Badge 8" />
-        <img src="https://github.com/user-attachments/assets/ed736b62-9e97-4f38-98ee-51f69bc414f7" alt="LC Badge 9" />
+        <img src="https://github.com/Mshashikanth1/README/assets/57630057/f0b76458-4a60-4343-93f0-21351a924f2a" alt="LC Badge 1" onclick="openModal(this)" />
+        <img src="https://github.com/Mshashikanth1/README/assets/57630057/44f2cde8-b9b0-41c6-865e-f52b2cae72c0" alt="LC Badge 2" onclick="openModal(this)" />
+        <img src="https://github.com/Mshashikanth1/leet-code/assets/57630057/90391a87-487b-44b0-9f22-46784a8319cc" alt="LC Badge 3" onclick="openModal(this)" />
+        <img src="https://github.com/Mshashikanth1/leet-code/assets/57630057/50eed98f-4e5b-4927-b49f-516a6815a0a3" alt="LC Badge 4" onclick="openModal(this)" />
+        <img src="https://github.com/Mshashikanth1/leet-code/assets/57630057/ebd3efb2-f8ea-4779-82d4-2cd79c40d13d" alt="LC Badge 5" onclick="openModal(this)" />
+        <img src="https://github.com/Mshashikanth1/leet-code/assets/57630057/ba91a4c6-a361-4ef6-8266-a5027a2810bc" alt="LC Badge 6" onclick="openModal(this)" />
+        <img src="https://github.com/Mshashikanth1/leet-code/assets/57630057/aba9b9d5-aa1b-45e6-8043-2f5e8670ce09" alt="LC Badge 7" onclick="openModal(this)" />
+        <img src="https://github.com/Mshashikanth1/leet-code/assets/57630057/86a7f4c9-c4c9-45df-9910-551bce5236a1" alt="LC Badge 8" onclick="openModal(this)" />
+        <img src="https://github.com/user-attachments/assets/ed736b62-9e97-4f38-98ee-51f69bc414f7" alt="LC Badge 9" onclick="openModal(this)" />
       </div>
     </div>
     
@@ -225,49 +306,48 @@ LeetCode : https://leetcode.com/u/Mshashikanth/
     <div id="memes" class="tabcontent">
       <p class="prompt"># Dragon Ball Memes</p>
       <div class="meme-grid">
-        <img src="https://i.pinimg.com/736x/29/f2/24/29f2245f604cd9606dff6113608cec46.jpg" alt="Over 9000 Meme" />
-        <img src="https://i.pinimg.com/736x/40/07/a2/4007a2299ec65b3424b9d86b1719b60c.jpg" alt="Goku Ultra Instinct" />
-        <img src="https://i.redd.it/ixaqyazagw6c1.jpeg" alt="Vegeta Final Flash" />
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1qCphzphq7nSH0xLOZOYUv9EaU8szZu0TVg" alt="Kamehameha Meme" />
+        <img src="https://i.pinimg.com/736x/29/f2/24/29f2245f604cd9606dff6113608cec46.jpg" alt="Over 9000 Meme" onclick="openModal(this)" />
+        <img src="https://i.pinimg.com/736x/40/07/a2/4007a2299ec65b3424b9d86b1719b60c.jpg" alt="Goku Ultra Instinct" onclick="openModal(this)" />
+        <img src="https://i.redd.it/ixaqyazagw6c1.jpeg" alt="Vegeta Final Flash" onclick="openModal(this)" />
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1qCphzphq7nSH0xLOZOYUv9EaU8szZu0TVg" alt="Kamehameha Meme" onclick="openModal(this)" />
 
-                <!-- programming  Memes Section -->
-         <img src="https://blog.zegocloud.com/wp-content/uploads/2024/02/programming-meme-2.jpg" alt="its working" />
-        <img src= "https://blog.zegocloud.com/wp-content/uploads/2024/02/programming-meme-4.jpg" alt="interstellar" />
-        <img src= "https://blog.zegocloud.com/wp-content/uploads/2024/02/programming-meme-5.jpg" alt="spiderman" />
-        <img src= "https://blog.zegocloud.com/wp-content/uploads/2024/02/programming-meme-6.jpg" alt="girl" />
-        <img src= "https://blog.zegocloud.com/wp-content/uploads/2024/02/programming-meme-27.jpg" alt="hey look" />
-        <img src= "https://blog.zegocloud.com/wp-content/uploads/2024/02/programming-meme-23.jpg" alt="i told you" />
+        <!-- Programming Memes -->
+        <img src="https://blog.zegocloud.com/wp-content/uploads/2024/02/programming-meme-2.jpg" alt="its working" onclick="openModal(this)" />
+        <img src="https://blog.zegocloud.com/wp-content/uploads/2024/02/programming-meme-4.jpg" alt="interstellar" onclick="openModal(this)" />
+        <img src="https://blog.zegocloud.com/wp-content/uploads/2024/02/programming-meme-5.jpg" alt="spiderman" onclick="openModal(this)" />
+        <img src="https://blog.zegocloud.com/wp-content/uploads/2024/02/programming-meme-6.jpg" alt="girl" onclick="openModal(this)" />
+        <img src="https://blog.zegocloud.com/wp-content/uploads/2024/02/programming-meme-27.jpg" alt="hey look" onclick="openModal(this)" />
+        <img src="https://blog.zegocloud.com/wp-content/uploads/2024/02/programming-meme-23.jpg" alt="i told you" onclick="openModal(this)" />
       </div>
     </div>
-
-
-    
     
     <!-- Anime Gallery Section -->
     <div id="anime" class="tabcontent">
       <p class="prompt"># Anime Gallery</p>
       <div class="meme-grid">
+        <!-- Dragon Ball -->
+        <img src="https://static1.cbrimages.com/wordpress/wp-content/uploads/2023/08/0bda3c34-0d84-4297-8b8f-6f87fce0832b.jpeg" alt="Dragon Ball" onclick="openModal(this)" />
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdJXc02hD8O_J2Mll79YD5WJrkyom5WWev0w&s" alt="Dragon Ball Z" onclick="openModal(this)" />
+        <img src="https://images.saymedia-content.com/.image/t_share/MTc1MTE0MjQzMTE1NTkxNDky/best-dragon-ball-z-girls.jpg" alt="Dragon Ball Girls" onclick="openModal(this)" />
+        <img src="https://static1.cbrimages.com/wordpress/wp-content/uploads/2022/02/Dragon-Ball-Best-Female-Characters-Caulifla-Android-18-Future-Mai.jpg" alt="Female Characters" onclick="openModal(this)" />
+        <img src="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2022/07/Launch-with-evil-personality-Dragon-Ball.jpg" alt="Evil Persona" onclick="openModal(this)" />
 
-        <!-- Dragon ball-->
-      <img src="https://static1.cbrimages.com/wordpress/wp-content/uploads/2023/08/0bda3c34-0d84-4297-8b8f-6f87fce0832b.jpeg" />
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdJXc02hD8O_J2Mll79YD5WJrkyom5WWev0w&s" />
-      <img src="https://images.saymedia-content.com/.image/t_share/MTc1MTE0MjQzMTE1NTkxNDky/best-dragon-ball-z-girls.jpg" />
-      <img src="https://static1.cbrimages.com/wordpress/wp-content/uploads/2022/02/Dragon-Ball-Best-Female-Characters-Caulifla-Android-18-Future-Mai.jpg" />
-      <img src="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2022/07/Launch-with-evil-personality-Dragon-Ball.jpg" />
-
-        <!-- other -->
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbEynE1klkxtYBoUJ-90_Va8y0YeVvDY2ldQ&s" alt="Naruto Uzumaki" />
-        <img src="https://i.redd.it/oab75sov2pdb1.jpg" alt="Sasuke Uchiha" />
-        <img src="https://motionbgs.com/media/1953/monkey-d-luffy-straw-hat2.jpg" alt="Monkey D. Luffy" />
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTX0X9fDYmRuzskCXY8rCFdw60-6q7PlihhQg&s" alt="Mikasa Ackerman" />
-        <img src="https://imgix.ranker.com/list_img_v2/8131/3168131/original/3168131?fit=crop&fm=pjpg&q=80&dpr=2&w=1200&h=720" alt="Eren Yeager" />
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_FiCGA_VM3ofyTuZfeFGD0-5gH02tuNRhCA&s" alt="Roronoa Zoro" />
-
-    
-
+        <!-- Other Anime -->
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbEynE1klkxtYBoUJ-90_Va8y0YeVvDY2ldQ&s" alt="Naruto Uzumaki" onclick="openModal(this)" />
+        <img src="https://i.redd.it/oab75sov2pdb1.jpg" alt="Sasuke Uchiha" onclick="openModal(this)" />
+        <img src="https://motionbgs.com/media/1953/monkey-d-luffy-straw-hat2.jpg" alt="Monkey D. Luffy" onclick="openModal(this)" />
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTX0X9fDYmRuzskCXY8rCFdw60-6q7PlihhQg&s" alt="Mikasa Ackerman" onclick="openModal(this)" />
+        <img src="https://imgix.ranker.com/list_img_v2/8131/3168131/original/3168131?fit=crop&fm=pjpg&q=80&dpr=2&w=1200&h=720" alt="Eren Yeager" onclick="openModal(this)" />
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_FiCGA_VM3ofyTuZfeFGD0-5gH02tuNRhCA&s" alt="Roronoa Zoro" onclick="openModal(this)" />
       </div>
     </div>
     
+  </div>
+  
+  <!-- Modal for enlarged images -->
+  <div id="modal" class="modal" onclick="closeModal()">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img class="modal-content" id="modalImg" />
   </div>
   
   <script>
@@ -284,6 +364,22 @@ LeetCode : https://leetcode.com/u/Mshashikanth/
       }
       document.getElementById(tabName).style.display = "block";
       evt.currentTarget.classList.add("active");
+    }
+    
+    // Function to open modal with clicked image
+    function openModal(imgElement) {
+      var modal = document.getElementById("modal");
+      var modalImg = document.getElementById("modalImg");
+      modal.style.display = "block";
+      modalImg.src = imgElement.src;
+      // Stop event propagation so clicking on modal image itself doesn't close modal
+      event.stopPropagation();
+    }
+    
+    // Function to close modal
+    function closeModal() {
+      var modal = document.getElementById("modal");
+      modal.style.display = "none";
     }
     
     // Background Slideshow using anime wallpapers
