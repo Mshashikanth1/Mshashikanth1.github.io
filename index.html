@@ -17,7 +17,7 @@
       transition: background-image 1s ease-in-out;
     }
     
-    /* Semi-transparent container to ensure text stands out */
+    /* Semi-transparent container */
     .container {
       width: 90%;
       max-width: 1000px;
@@ -35,24 +35,22 @@
       margin-bottom: 20px;
     }
     
-    /* Blinking Cursor Effect */
+    /* Blinking Cursor */
     .cursor {
       display: inline-block;
       width: 10px;
       border-right: 2px solid #0f0;
       animation: blink 0.7s steps(1) infinite;
     }
-    
     @keyframes blink {
       50% { border-color: transparent; }
     }
     
-    /* Tabs styled as terminal commands */
+    /* Tabs */
     .tabs {
       margin-bottom: 20px;
       text-align: center;
     }
-    
     .tabs button {
       background: none;
       border: none;
@@ -63,42 +61,38 @@
       margin-right: 10px;
       outline: none;
     }
-    
     .tabs button:hover,
     .tabs button.active {
       text-decoration: underline;
     }
     
+    /* Tab Content */
     .tabcontent {
       display: none;
       padding: 10px;
       border-top: 1px solid #0f0;
       margin-bottom: 20px;
     }
-    
     .tabcontent pre {
       white-space: pre-wrap;
       word-wrap: break-word;
       margin: 0;
     }
-    
     a {
       color: #0f0;
       text-decoration: none;
     }
-    
     a:hover {
       text-decoration: underline;
     }
     
-    /* Grid layout for image galleries (badges, memes, anime) */
-    .meme-grid, .badge-grid {
+    /* Grid layouts */
+    .meme-grid, .badge-grid, .blog-list {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
       gap: 10px;
       margin-top: 20px;
     }
-    
     .meme-grid img, .badge-grid img {
       width: 100%;
       border: 2px solid #0f0;
@@ -106,19 +100,30 @@
       cursor: pointer;
       transition: transform 0.3s ease;
     }
-    
     .meme-grid img:hover, .badge-grid img:hover {
       transform: scale(1.05);
     }
     
-    /* Terminal Prompt Style for Section Headers */
+    /* Blog item style */
+    .blog-item {
+      padding: 10px;
+      border: 1px solid #0f0;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .blog-item:hover {
+      background: rgba(0, 255, 0, 0.1);
+    }
+    
+    /* Section Headers */
     .prompt {
       color: #0f0;
       font-weight: bold;
       margin-bottom: 5px;
     }
     
-    /* Profile photo styling */
+    /* Profile Pic */
     .profile-pic {
       border-radius: 50%;
       border: 2px solid #0f0;
@@ -129,7 +134,131 @@
       margin: 0 auto 10px;
     }
     
-    /* Responsive Media Queries */
+    /* Suggestion Box */
+    #suggestion-form {
+      background: rgba(0, 0, 0, 0.9);
+      border: 1px solid #0f0;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 5px;
+      display: none;
+    }
+    #suggestion-form h3 {
+      color: #0f0;
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    #suggestion-form input,
+    #suggestion-form textarea {
+      width: 100%;
+      background: transparent;
+      border: 1px solid #0f0;
+      color: #0f0;
+      padding: 8px;
+      margin-bottom: 10px;
+      font-family: "Courier New", Courier, monospace;
+    }
+    #suggestion-form button {
+      background: #000;
+      color: #0f0;
+      border: 1px solid #0f0;
+      padding: 10px 15px;
+      cursor: pointer;
+      font-family: "Courier New", Courier, monospace;
+    }
+    #suggestion-form button:hover {
+      background: #0f0;
+      color: #000;
+    }
+    #suggestion-response {
+      color: #0f0;
+      font-family: "Courier New", Courier, monospace;
+      margin-top: 10px;
+    }
+    
+    /* Fixed Buttons */
+    #toggle-suggestion {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 10px 15px;
+      border: 1px solid #0f0;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      color: #0f0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    #like-counter, #dislike-counter {
+      position: fixed;
+      bottom: 20px;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 10px 15px;
+      border: 1px solid #0f0;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      color: #0f0;
+      z-index: 100;
+    }
+    #like-counter { right: 20px; }
+    #dislike-counter { right: 180px; }
+    
+    /* Modal Styles (for images & blogs) */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.9);
+      padding-top: 60px;
+    }
+    .modal-content {
+      margin: auto;
+      display: block;
+      max-width: 90%;
+      max-height: 80%;
+    }
+    .modal-content, .close {
+      animation: fadeIn 0.3s;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+    .close {
+      position: absolute;
+      top: 30px;
+      right: 35px;
+      color: #f1f1f1;
+      font-size: 40px;
+      font-weight: bold;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+    .close:hover, .close:focus {
+      color: #bbb;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    
+    /* View Counter */
+    #view-counter {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 16px;
+      color: #0f0;
+    }
+    
+    /* Responsive */
     @media only screen and (max-width: 600px) {
       .container {
         padding: 10px;
@@ -153,77 +282,13 @@
         width: 120px;
         height: 120px;
       }
-    }
-    
-    /* Modal Styles */
-    .modal {
-      display: none; /* Hidden by default */
-      position: fixed;
-      z-index: 10;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.9);
-      padding-top: 60px;
-    }
-    
-    .modal-content {
-      margin: auto;
-      display: block;
-      max-width: 90%;
-      max-height: 80%;
-    }
-    
-    .modal-content, .close {
-      animation: fadeIn 0.3s;
-    }
-    
-    @keyframes fadeIn {
-      from {opacity: 0;}
-      to {opacity: 1;}
-    }
-    
-    .close {
-      position: absolute;
-      top: 30px;
-      right: 35px;
-      color: #f1f1f1;
-      font-size: 40px;
-      font-weight: bold;
-      transition: 0.3s;
-      cursor: pointer;
-    }
-    
-    .close:hover,
-    .close:focus {
-      color: #bbb;
-      text-decoration: none;
-      cursor: pointer;
-    }
-    
-    /* View Counter Styling */
-    #view-counter {
-      text-align: center;
-      margin-top: 10px;
-      font-size: 16px;
-      color: #0f0;
-    }
-    
-    /* Like Counter (Fixed Corner) */
-    #like-counter {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: rgba(0, 0, 0, 0.8);
-      padding: 10px 15px;
-      border: 1px solid #0f0;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-      color: #0f0;
-      z-index: 100;
+      #suggestion-form h3 {
+        font-size: 18px;
+      }
+      #toggle-suggestion {
+        font-size: 14px;
+        padding: 8px 16px;
+      }
     }
   </style>
 </head>
@@ -246,6 +311,7 @@
       <button class="tablink" onclick="openTab(event, 'contact')">&gt; contact</button>
       <button class="tablink" onclick="openTab(event, 'memes')">&gt; memes</button>
       <button class="tablink" onclick="openTab(event, 'anime')">&gt; anime</button>
+      <button class="tablink" onclick="openTab(event, 'blogs'); loadBlogs();">&gt; blogs</button>
     </div>
     
     <!-- Profile Section -->
@@ -350,13 +416,11 @@ LeetCode : https://leetcode.com/u/Mshashikanth/
     <div id="anime" class="tabcontent">
       <p class="prompt"># Anime Gallery</p>
       <div class="meme-grid">
-        <!-- Dragon Ball -->
         <img src="https://static1.cbrimages.com/wordpress/wp-content/uploads/2023/08/0bda3c34-0d84-4297-8b8f-6f87fce0832b.jpeg" alt="Dragon Ball" onclick="openModal(this)" />
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdJXc02hD8O_J2Mll79YD5WJrkyom5WWev0w&s" alt="Dragon Ball Z" onclick="openModal(this)" />
         <img src="https://images.saymedia-content.com/.image/t_share/MTc1MTE0MjQzMTE1NTkxNDky/best-dragon-ball-z-girls.jpg" alt="Dragon Ball Girls" onclick="openModal(this)" />
         <img src="https://static1.cbrimages.com/wordpress/wp-content/uploads/2022/02/Dragon-Ball-Best-Female-Characters-Caulifla-Android-18-Future-Mai.jpg" alt="Female Characters" onclick="openModal(this)" />
         <img src="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2022/07/Launch-with-evil-personality-Dragon-Ball.jpg" alt="Evil Persona" onclick="openModal(this)" />
-        <!-- Other Anime -->
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbEynE1klkxtYBoUJ-90_Va8y0YeVvDY2ldQ&s" alt="Naruto Uzumaki" onclick="openModal(this)" />
         <img src="https://i.redd.it/oab75sov2pdb1.jpg" alt="Sasuke Uchiha" onclick="openModal(this)" />
         <img src="https://motionbgs.com/media/1953/monkey-d-luffy-straw-hat2.jpg" alt="Monkey D. Luffy" onclick="openModal(this)" />
@@ -366,28 +430,47 @@ LeetCode : https://leetcode.com/u/Mshashikanth/
       </div>
     </div>
     
+    <!-- Blogs Section -->
+    <div id="blogs" class="tabcontent">
+      <p class="prompt"># Blogs</p>
+      <div id="blogs-container" class="blog-list">
+        <p>Loading blogs...</p>
+      </div>
+    </div>
+    
+    <!-- Suggestion Box -->
+    <div id="suggestion-form">
+      <h3>💬 Leave a Suggestion</h3>
+      <input type="text" id="suggestion-name" placeholder="Your Name/Email/Phone" required /><br/><br/>
+      <textarea id="suggestion-message" placeholder="Your suggestion (max 500 characters)..." rows="4" maxlength="500" required></textarea><br/><br/>
+      <button onclick="submitSuggestion()">Submit</button>
+      <p id="suggestion-response"></p>
+    </div>
+    
   </div>
   
-  <!-- Fixed Like Counter in Corner -->
-  <div id="like-counter" onclick="incrementLike()">❤️ Like</div>
+  <!-- Fixed Buttons -->
+  <div id="like-counter" onclick="incrementLike()">❤️ Like (<span id="like-count">Loading...</span>)</div>
+  <div id="dislike-counter" onclick="incrementDislike()">👎 Dislike (<span id="dislike-count">Loading...</span>)</div>
+  <div id="toggle-suggestion" onclick="toggleSuggestion()">✍️ Leave a Suggestion</div>
   
-  <!-- Fixed Dislike Counter -->
-<div id="dislike-counter" onclick="incrementDislike()" style="position: fixed; bottom: 20px; right: 120px; background: rgba(0,0,0,0.8); padding: 10px 15px; border: 1px solid #0f0; border-radius: 5px; cursor: pointer; font-size: 16px; color: #0f0; z-index: 100;">
-  👎 Dislike (Loading...)
-</div>
-  
-  <!-- Modal for Enlarged Images -->
+  <!-- Modal for Images -->
   <div id="modal" class="modal" onclick="closeModal()">
     <span class="close" onclick="closeModal()">&times;</span>
     <img class="modal-content" id="modalImg" />
   </div>
   
+  <!-- Modal for Blog Content -->
+  <div id="blogModal" class="modal" onclick="closeBlogModal()">
+    <span class="close" onclick="closeBlogModal()">&times;</span>
+    <div class="modal-content" id="blogModalContent" style="background: transparent; padding: 20px; color: #0f0;"></div>
+  </div>
+  
   <script>
-    // Function for switching tabs
+    // Switch tabs
     function openTab(evt, tabName) {
-      var i, tabcontent, tablinks;
-      tabcontent = document.getElementsByClassName("tabcontent");
-      for (i = 0; i < tabcontent.length; i++) {
+      var tabcontent = document.getElementsByClassName("tabcontent");
+      for (var i = 0; i < tabcontent.length; i++) {
         tabcontent[i].style.display = "none";
       }
       var btns = document.querySelectorAll(".tabs button");
@@ -396,21 +479,45 @@ LeetCode : https://leetcode.com/u/Mshashikanth/
       evt.currentTarget.classList.add("active");
     }
     
-    // Function to open modal with clicked image
+    // Open image modal
     function openModal(imgElement) {
       var modal = document.getElementById("modal");
       var modalImg = document.getElementById("modalImg");
       modal.style.display = "block";
       modalImg.src = imgElement.src;
-      event.stopPropagation();
     }
     
-    // Function to close modal
+    // Close image modal
     function closeModal() {
       document.getElementById("modal").style.display = "none";
     }
     
-    // Background Slideshow using anime wallpapers
+    // Open blog modal using data-content attribute
+    function openBlogModalFromData(el) {
+      var content = decodeURIComponent(el.getAttribute("data-content"));
+      openBlogModal(content);
+    }
+    
+    // Open blog modal
+    function openBlogModal(content) {
+      var blogModal = document.getElementById("blogModal");
+      var blogModalContent = document.getElementById("blogModalContent");
+      blogModalContent.innerHTML = content;
+      blogModal.style.display = "block";
+    }
+    
+    // Close blog modal
+    function closeBlogModal() {
+      document.getElementById("blogModal").style.display = "none";
+    }
+    
+    // Toggle suggestion form
+    function toggleSuggestion() {
+      var form = document.getElementById("suggestion-form");
+      form.style.display = (form.style.display === "none" || form.style.display === "") ? "block" : "none";
+    }
+    
+    // Background slideshow (placeholder wallpaper)
     var wallpapers = [
       "url('https://www.solidbackgrounds.com/images/1920x1080/1920x1080-black-solid-color-background.jpg')"
     ];
@@ -422,13 +529,12 @@ LeetCode : https://leetcode.com/u/Mshashikanth/
     changeWallpaper();
     setInterval(changeWallpaper, 5000);
     
-    // View Counter using CountAPI for "visits"
+    // View counter (CountAPI)
     fetch("https://api.counterapi.dev/v1/mshashikanth1.github.io/visits")
       .then(response => response.json())
       .then(data => {
         document.getElementById("view-counter").innerText =
           "This page has been viewed " + data.count + " times.";
-        
         // Increment view count by 1
         fetch("https://api.counterapi.dev/v1/mshashikanth1.github.io/visits/set?count=" + (data.count + 1))
           .then(postRes => postRes.json())
@@ -437,17 +543,15 @@ LeetCode : https://leetcode.com/u/Mshashikanth/
       })
       .catch(err => console.error("Error fetching view counter:", err));
     
-    // Function to update Like counter display
+    // Like counter functions (CountAPI)
     function updateLikeCount() {
       fetch("https://api.counterapi.dev/v1/mshashikanth1.github.io/likes")
         .then(response => response.json())
         .then(data => {
-          document.getElementById("like-counter").innerText = "❤️ Like (" + data.count + ")";
+          document.getElementById("like-count").innerText = data.count;
         })
         .catch(err => console.error("Error fetching like counter:", err));
     }
-    
-    // Function to increment Like counter on click
     function incrementLike() {
       fetch("https://api.counterapi.dev/v1/mshashikanth1.github.io/likes")
         .then(response => response.json())
@@ -455,7 +559,7 @@ LeetCode : https://leetcode.com/u/Mshashikanth/
           fetch("https://api.counterapi.dev/v1/mshashikanth1.github.io/likes/set?count=" + (data.count + 1))
             .then(res => res.json())
             .then(postData => {
-              document.getElementById("like-counter").innerText = "❤️ Like (" + postData.count + ")";
+              document.getElementById("like-count").innerText = postData.count;
               console.log("Updated like counter:", postData);
             })
             .catch(err => console.error("Error setting like counter:", err));
@@ -463,39 +567,124 @@ LeetCode : https://leetcode.com/u/Mshashikanth/
         .catch(err => console.error("Error fetching like counter:", err));
     }
     
-    // Initialize Like counter on page load
-    updateLikeCount();
-    
-    
-    // Update the dislike counter display
-function updateDislikeCount() {
-  fetch("https://api.counterapi.dev/v1/mshashikanth1.github.io/dislikes")
-    .then(response => response.json())
-    .then(data => {
-      document.getElementById("dislike-counter").innerText = "👎 Dislike (" + data.count + ")";
-    })
-    .catch(err => console.error("Error fetching dislike counter:", err));
-}
-
-// Increment the dislike counter when the button is clicked
-function incrementDislike() {
-  fetch("https://api.counterapi.dev/v1/mshashikanth1.github.io/dislikes")
-    .then(response => response.json())
-    .then(data => {
-      fetch("https://api.counterapi.dev/v1/mshashikanth1.github.io/dislikes/set?count=" + (data.count + 1))
-        .then(res => res.json())
-        .then(postData => {
-          document.getElementById("dislike-counter").innerText = "👎 Dislike (" + postData.count + ")";
-          console.log("Updated dislike counter:", postData);
+    // Dislike counter functions (CountAPI)
+    function updateDislikeCount() {
+      fetch("https://api.counterapi.dev/v1/mshashikanth1.github.io/dislikes")
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById("dislike-count").innerText = data.count;
         })
-        .catch(err => console.error("Error setting dislike counter:", err));
-    })
-    .catch(err => console.error("Error fetching dislike counter:", err));
-}
-
-// Initialize dislike counter on page load
-updateDislikeCount();
-
+        .catch(err => console.error("Error fetching dislike counter:", err));
+    }
+    function incrementDislike() {
+      fetch("https://api.counterapi.dev/v1/mshashikanth1.github.io/dislikes")
+        .then(response => response.json())
+        .then(data => {
+          fetch("https://api.counterapi.dev/v1/mshashikanth1.github.io/dislikes/set?count=" + (data.count + 1))
+            .then(res => res.json())
+            .then(postData => {
+              document.getElementById("dislike-count").innerText = postData.count;
+              console.log("Updated dislike counter:", postData);
+            })
+            .catch(err => console.error("Error setting dislike counter:", err));
+        })
+        .catch(err => console.error("Error fetching dislike counter:", err));
+    }
+    
+    // Initialize Like and Dislike counters
+    updateLikeCount();
+    updateDislikeCount();
+    
+    // Helper: Strip HTML for preview
+    function stripHtml(html) {
+      var div = document.createElement("div");
+      div.innerHTML = html;
+      return div.textContent || div.innerText || "";
+    }
+    
+    // Load blogs dynamically from Dev.to and Medium using rss2json
+    function loadBlogs() {
+      var blogsContainer = document.getElementById("blogs-container");
+      blogsContainer.innerHTML = "<p>Loading blogs...</p>";
+      
+      // Fetch Dev.to articles via RSS-to-JSON
+      fetch("https://api.rss2json.com/v1/api.json?rss_url=https://dev.to/feed/ssh3")
+        .then(response => response.json())
+        .then(devData => {
+          let html = "<h4>Dev.to Articles</h4>";
+          devData.items.forEach(article => {
+            // Use article.content for full article; preview shows stripped HTML preview.
+            html += `<div class="blog-item" data-content="${encodeURIComponent(article.content)}" onclick="openBlogModalFromData(this)">
+                       <strong>${article.title}</strong>
+                       <p>${stripHtml(article.content).substring(0, 100)}...</p>
+                     </div>`;
+          });
+          blogsContainer.innerHTML = html;
+        })
+        .catch(err => {
+          console.error("Error fetching Dev.to articles:", err);
+          blogsContainer.innerHTML = "<p>Error loading Dev.to articles.</p>";
+        });
+      
+      // Fetch Medium articles via rss2json
+      fetch("https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@shashikanthvarma")
+        .then(response => response.json())
+        .then(mediumData => {
+          let html = "<h4>Medium Articles</h4>";
+          mediumData.items.forEach(article => {
+            html += `<div class="blog-item" data-content="${encodeURIComponent(article.content)}" onclick="openBlogModalFromData(this)">
+                       <strong>${article.title}</strong>
+                       <p>${stripHtml(article.content).substring(0, 100)}...</p>
+                     </div>`;
+          });
+          blogsContainer.innerHTML += html;
+        })
+        .catch(err => {
+          console.error("Error fetching Medium articles:", err);
+          blogsContainer.innerHTML += "<p>Error loading Medium articles.</p>";
+        });
+    }
+    
+    // Open blog modal using data-content attribute
+    function openBlogModalFromData(el) {
+      var content = decodeURIComponent(el.getAttribute("data-content"));
+      openBlogModal(content);
+    }
+    
+    // Suggestion Form Submission with 500-char limit and auto-close
+    function submitSuggestion() {
+      var name = document.getElementById('suggestion-name').value;
+      var message = document.getElementById('suggestion-message').value;
+      
+      if (message.length > 500) {
+        alert("Your suggestion is too long. Please limit it to 500 characters.");
+        return;
+      }
+      if (!name || !message) {
+        alert("Please enter both your name and a suggestion.");
+        return;
+      }
+      
+      var url = "https://script.google.com/macros/s/AKfycbylFl8U-Rl7nvYHiDBi739zSp5lnnghdDqvTZg3SGioYOKpRobc-B--Eg8MlSjwqQpp9g/exec";
+      var data = { name: name, message: message };
+      
+      fetch(url, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      })
+      .then(() => {
+        document.getElementById("suggestion-response").innerText = "🙏 Thank you for your suggestion!";
+        document.getElementById('suggestion-name').value = "";
+        document.getElementById('suggestion-message').value = "";
+        document.getElementById("suggestion-form").style.display = "none";
+      })
+      .catch(err => {
+        console.error("Error submitting suggestion:", err);
+        document.getElementById("suggestion-response").innerText = "Something went wrong. Please try again later.";
+      });
+    }
   </script>
 </body>
 </html>
