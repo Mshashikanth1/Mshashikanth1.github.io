@@ -388,7 +388,7 @@
     </div>
 
     <!-- Profile Section (with badges) -->
-    <div id="profile" class="tabcontent" style="display: block;">
+    <div id="profile" class="tabcontent" >
         <p class="prompt"># Profile</p>
         <pre>
 Mallepally Shashi Kanth Varma
@@ -478,7 +478,7 @@ Discord     : ssh__3_
 
 
     <!-- Dragon Ball Memes Section -->
-    <div id="memes" class="tabcontent">
+    <div id="memes" class="tabcontent" style="display: block;">
         <p class="prompt"># Dragon Ball Memes</p>
         <div class="meme-grid" id="memes-grid">
             <img class="paginated-item" src="https://i.pinimg.com/736x/29/f2/24/29f2245f604cd9606dff6113608cec46.jpg" alt="Over 9000 Meme" onclick="openModal(this)" />
@@ -523,10 +523,15 @@ Discord     : ssh__3_
     <!-- Music Section -->
     <div id="music" class="tabcontent">
         <p class="prompt"># Music</p>
-        <div class="responsive-iframe">
-            <!-- Autoplay & Mute parameters added to enable autoplay -->
-            <iframe src="https://www.youtube.com/watch?v=pkW3ftvZedo&t=1498s?autoplay=1&mute=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
+       <div class="responsive-iframe">
+  <iframe
+    src="https://www.youtube.com/embed/pkW3ftvZedo?start=1498&autoplay=1&mute=1"
+    frameborder="0"
+    allow="autoplay; encrypted-media"
+    allowfullscreen>
+  </iframe>
+</div>
+
     </div>
 
     <!-- Suggestion Box -->
