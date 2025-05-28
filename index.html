@@ -5,6 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mallepally Shashi Kanth Varma - Terminal Profile</title>
     <style>
+    body, html {
+          margin: 0;
+          padding: 0;
+          height: 100%;
+          overflow: hidden;
+          font-family: sans-serif;
+        }
+
+        #video-bg {
+          position: fixed;
+          top: 0;
+          left: 0;
+          min-width: 100%;
+          min-height: 100%;
+          z-index: -1;
+          opacity: 0.5; /* 🔴 Make video translucent */
+          object-fit: cover;
+        }
+
+        #overlay-content {
+          position: relative;
+          z-index: 10;
+          color: white;
+          text-align: center;
+          padding-top: 30vh;
+        }
+
+        button {
+          padding: 1em 2em;
+          font-size: 1.2em;
+          margin-top: 2em;
+        }
+
+        
         /* Base Styles */
         body {
           margin: 0;
@@ -372,8 +406,7 @@
         <p>Software Engineer</p>
     </header>
 
-    <!-- View Counter -->
-    <div id="view-counter">Loading view counter...</div>
+    <!-- View Counter <div id="view-counter">Loading view counter...</div> ---->
 
     <div class="tabs">
         <button class="tablink" onclick="openTab(event, 'profile')">&gt; profile</button>
@@ -530,6 +563,10 @@ Discord     : ssh__3_
     allow="autoplay; encrypted-media"
     allowfullscreen>
   </iframe>
+
+   <video id="video-bg" preload="auto" playsinline>
+    <source src="videoplayback.mp4" type="video/mp4">
+</video>
 </div>
 
     </div>
