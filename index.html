@@ -41,11 +41,12 @@
         .dialog {
           position:absolute;
           bottom:100%;
-          margin-bottom:15px;
-          background:rgba(255,255,255,0.95);
+          margin-bottom:25px; /* Increased margin to make space for the tail */
+          background:white; /* Solid white background */
           color:black;
-          padding:10px 14px;
-          border-radius:12px;
+          padding:10px; /* Adjusted padding */
+          border: 4px solid black; /* Dark, thick border */
+          border-radius:4px; /* Slightly rounded corners */
           font-size:12px;
           white-space:normal;
           width:200px;
@@ -54,6 +55,31 @@
           pointer-events:none;
           transition: opacity 0.2s ease, width 0.5s ease, font-size 0.5s ease; /* Smooth transition for dialog changes */
           z-index:10;
+          box-shadow: 8px 8px 0px rgba(0,0,0,0.5); /* Retro shadow effect */
+        }
+        .dialog::before {
+          content: '';
+          position: absolute;
+          bottom: -12px; /* Position the tip of the arrow */
+          left: 50%;
+          transform: translateX(-50%);
+          width: 0;
+          height: 0;
+          border-left: 12px solid transparent;
+          border-right: 12px solid transparent;
+          border-top: 12px solid black; /* Outer border of the arrow */
+        }
+        .dialog::after {
+          content: '';
+          position: absolute;
+          bottom: -8px; /* Position the tip of the inner arrow */
+          left: 50%;
+          transform: translateX(-50%);
+          width: 0;
+          height: 0;
+          border-left: 8px solid transparent;
+          border-right: 8px solid transparent;
+          border-top: 8px solid white; /* Inner fill of the arrow */
         }
         canvas {
           position:absolute;
@@ -65,16 +91,12 @@
 
         @media (max-width: 768px) {
           #battlefield {
-            flex-direction: column;
-            overflow-x: hidden;
-            overflow-y: auto;
-            padding: 50px 0;
-            white-space: normal;
+            padding: 0 20px; /* Adjust padding for smaller screens */
             align-items: center;
           }
 
           .pokemon {
-            margin: 25px 0; /* Increased margin for vertical layout */
+            margin: 0 10px; /* Adjust margin for smaller screens */
           }
 
           .pokemon img {
@@ -107,6 +129,21 @@
 <body>
 <div id="battlefield"></div>
 <canvas id="particles"></canvas>
+
+<div id="pokemonDetailModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:100;">
+  <div style="background:white; margin:10% auto; padding:20px; border-radius:8px; width:80%; max-width:500px; color:black; position:relative;">
+    <button id="closeModal" style="position:absolute; top:10px; right:10px; background:none; border:none; font-size:20px; cursor:pointer;">&times;</button>
+    <h2 id="modalPokemonName" style="text-align:center;"></h2>
+    <div style="text-align:center; margin-bottom:15px;">
+      <img id="modalPokemonImage" src="" alt="Pokemon" style="width:150px; height:150px; object-fit:contain; image-rendering:pixelated;">
+    </div>
+    <p><strong>Types:</strong> <span id="modalPokemonTypes"></span></p>
+    <p><strong>Abilities:</strong> <span id="modalPokemonAbilities"></span></p>
+    <p><strong>Height:</strong> <span id="modalPokemonHeight"></span></p>
+    <p><strong>Weight:</strong> <span id="modalPokemonWeight"></span></p>
+  </div>
+</div>
+
 <script>
     const pokemonCount = 1025;
     const battlefield = document.getElementById('battlefield');
@@ -141,6 +178,45 @@
         console.error("Error with audio element:", e);
         // Optionally, alert the user or display a message
     });
+
+    const pokemonDetailModal = document.getElementById('pokemonDetailModal');
+    const closeModalButton = document.getElementById('closeModal');
+    const modalPokemonName = document.getElementById('modalPokemonName');
+    const modalPokemonImage = document.getElementById('modalPokemonImage');
+    const modalPokemonTypes = document.getElementById('modalPokemonTypes');
+    const modalPokemonAbilities = document.getElementById('modalPokemonAbilities');
+    const modalPokemonHeight = document.getElementById('modalPokemonHeight');
+    const modalPokemonWeight = document.getElementById('modalPokemonWeight');
+
+    closeModalButton.addEventListener('click', () => {
+      pokemonDetailModal.style.display = 'none';
+    });
+
+    pokemonDetailModal.addEventListener('click', (event) => {
+      if (event.target === pokemonDetailModal) {
+        pokemonDetailModal.style.display = 'none';
+      }
+    });
+
+    function showPokemonDetails(pokemonDiv) {
+      modalPokemonName.textContent = pokemonDiv.dataset.name;
+      modalPokemonImage.src = pokemonDiv.dataset.sprite1;
+      modalPokemonTypes.textContent = pokemonDiv.dataset.types;
+      modalPokemonAbilities.textContent = pokemonDiv.dataset.abilities || 'N/A';
+      modalPokemonHeight.textContent = pokemonDiv.dataset.height ? `${pokemonDiv.dataset.height / 10} m` : 'N/A';
+      modalPokemonWeight.textContent = pokemonDiv.dataset.weight ? `${pokemonDiv.dataset.weight / 10} kg` : 'N/A';
+      pokemonDetailModal.style.display = 'block';
+    }
+
+    function handlePokemonClick(pokemonDiv) {
+      const cryUrl = pokemonDiv.dataset.cry;
+      if (cryUrl) {
+        const audio = new Audio(cryUrl);
+        audio.volume = 0.5; // Adjust volume as needed
+        audio.play().catch(e => console.error("Error playing Pokémon cry:", e));
+      }
+      showPokemonDetails(pokemonDiv);
+    }
 
     // ===== Resume lines with anime-style emotion =====
     const achievements = [
@@ -276,7 +352,11 @@
 
         const types = data.types.map(t=>t.type.name);
         const name = data.name;
-        return {sprite, sprite2, types, name, animatedSprite};
+        const cry = data.cries?.latest || data.cries?.legacy; // Get the cry URL, prioritizing 'latest'
+        const abilities = data.abilities.map(a => a.ability.name).join(', ');
+        const height = data.height;
+        const weight = data.weight;
+        return {sprite, sprite2, types, name, animatedSprite, cry, abilities, height, weight};
       }catch(e){
         console.error(`Failed to fetch pokemon ${index}:`, e);
         return null;
@@ -298,6 +378,7 @@
 
       div.addEventListener('mouseenter',()=>showDialog(div));
       div.addEventListener('mouseleave',()=>hideDialog(div));
+      div.addEventListener('click', () => handlePokemonClick(div));
 
       battlefield.appendChild(div);
       return div;
@@ -323,6 +404,18 @@
               }
               if (data.animatedSprite) {
                 div.dataset.animated = data.animatedSprite;
+              }
+              if (data.cry) {
+                div.dataset.cry = data.cry;
+              }
+              if (data.abilities) {
+                div.dataset.abilities = data.abilities;
+              }
+              if (data.height) {
+                div.dataset.height = data.height;
+              }
+              if (data.weight) {
+                div.dataset.weight = data.weight;
               }
               div.dataset.types=data.types.join(',');
             }
@@ -427,7 +520,7 @@
     let autoScrollEnabled = true;
 
     function autoScroll(){
-      if (window.innerWidth > 768 && autoScrollEnabled) {
+      if (autoScrollEnabled) {
         battlefield.scrollLeft += scrollDirection * 2; // faster scroll
         if(battlefield.scrollLeft >= battlefield.scrollWidth - window.innerWidth -1) {
             scrollDirection = -1;
