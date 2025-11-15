@@ -139,13 +139,12 @@
     </div>
     <p><strong>Types:</strong> <span id="modalPokemonTypes"></span></p>
     <p><strong>Abilities:</strong> <span id="modalPokemonAbilities"></span></p>
-    <p><strong>Height:</strong> <span id="modalPokemonHeight"></span></p>
-    <p><strong>Weight:</strong> <span id="modalPokemonWeight"></span></p>
+    <p><a id="modalProjectLink" href="#" target="_blank" style="color:#007bff; text-decoration:none;">View Project</a></p>
   </div>
 </div>
 
 <script>
-    const pokemonCount = 1025;
+
     const battlefield = document.getElementById('battlefield');
     const canvas = document.getElementById('particles');
     const ctx = canvas.getContext('2d');
@@ -185,8 +184,7 @@
     const modalPokemonImage = document.getElementById('modalPokemonImage');
     const modalPokemonTypes = document.getElementById('modalPokemonTypes');
     const modalPokemonAbilities = document.getElementById('modalPokemonAbilities');
-    const modalPokemonHeight = document.getElementById('modalPokemonHeight');
-    const modalPokemonWeight = document.getElementById('modalPokemonWeight');
+    const modalProjectLink = document.getElementById('modalProjectLink');
 
     closeModalButton.addEventListener('click', () => {
       pokemonDetailModal.style.display = 'none';
@@ -199,12 +197,61 @@
     });
 
     function showPokemonDetails(pokemonDiv) {
-      modalPokemonName.textContent = pokemonDiv.dataset.name;
-      modalPokemonImage.src = pokemonDiv.dataset.sprite1;
-      modalPokemonTypes.textContent = pokemonDiv.dataset.types;
-      modalPokemonAbilities.textContent = pokemonDiv.dataset.abilities || 'N/A';
-      modalPokemonHeight.textContent = pokemonDiv.dataset.height ? `${pokemonDiv.dataset.height / 10} m` : 'N/A';
-      modalPokemonWeight.textContent = pokemonDiv.dataset.weight ? `${pokemonDiv.dataset.weight / 10} kg` : 'N/A';
+      const resumeType = pokemonDiv.dataset.resumetype;
+      const resumeTitle = pokemonDiv.dataset.resumetitle;
+      const resumeDetails = pokemonDiv.dataset.resumedetails;
+      const resumeLink = pokemonDiv.dataset.resumelink;
+      const resumeTechnologies = pokemonDiv.dataset.resumetechnologies;
+      const resumeCategory = pokemonDiv.dataset.resumecategory;
+      const resumeCompany = pokemonDiv.dataset.resumecompany;
+      const resumeRole = pokemonDiv.dataset.resumerole;
+      const resumeDuration = pokemonDiv.dataset.resumeduration;
+
+      modalPokemonName.textContent = resumeTitle;
+      modalPokemonImage.src = pokemonDiv.dataset.sprite1; // Keep Pokémon image
+
+      // Clear previous content
+      modalPokemonTypes.innerHTML = '';
+      modalPokemonAbilities.innerHTML = '';
+      modalProjectLink.style.display = 'none';
+      modalProjectLink.href = '#';
+
+      if (resumeType === 'project') {
+        modalPokemonTypes.innerHTML = `<strong>Technologies:</strong> ${resumeTechnologies}`;
+        modalPokemonAbilities.innerHTML = `<strong>Achievements:</strong><p>${resumeDetails}</p>`; // Display as paragraph
+        if (resumeLink) {
+          modalProjectLink.href = resumeLink;
+          modalProjectLink.textContent = 'View Project';
+          modalProjectLink.style.display = 'block';
+        }
+      } else if (resumeType === 'skill') {
+        modalPokemonTypes.innerHTML = `<strong>Category:</strong> ${resumeCategory}`;
+        modalPokemonAbilities.innerHTML = `<strong>Skill:</strong> ${resumeDetails}`;
+      } else if (resumeType === 'experience') {
+        modalPokemonTypes.innerHTML = `<strong>Company:</strong> ${resumeCompany} | <strong>Role:</strong> ${resumeRole}`;
+        modalPokemonAbilities.innerHTML = `<strong>Details:</strong> ${resumeDetails}`;
+        // Optionally add duration here if needed
+      } else if (resumeType === 'education') {
+        modalPokemonTypes.innerHTML = `<strong>Degree:</strong> ${resumeTitle}`;
+        modalPokemonAbilities.innerHTML = `<strong>Details:</strong> ${resumeDetails}`;
+      } else if (resumeType === 'contact') {
+        modalPokemonTypes.innerHTML = `<strong>Type:</strong> ${resumeTitle}`;
+        modalPokemonAbilities.innerHTML = `<strong>Details:</strong> ${resumeDetails}`;
+        if (resumeLink) {
+          modalProjectLink.href = resumeLink;
+          modalProjectLink.textContent = `View ${resumeTitle}`;
+          modalProjectLink.style.display = 'block';
+        }
+      } else if (resumeType === 'certification') {
+        modalPokemonTypes.innerHTML = `<strong>Type:</strong> ${resumeTitle}`;
+        modalPokemonAbilities.innerHTML = `<strong>Details:</strong> ${resumeDetails}`;
+        if (resumeLink) {
+          modalProjectLink.href = resumeLink;
+          modalProjectLink.textContent = `View ${resumeTitle}`;
+          modalProjectLink.style.display = 'block';
+        }
+      }
+
       pokemonDetailModal.style.display = 'block';
     }
 
@@ -219,7 +266,166 @@
     }
 
     // ===== Resume lines with anime-style emotion =====
-    const achievements = [
+    const resumeData = [
+      // Contact Information
+      { type: "contact", title: "Email", details: "shashikanthvarma98@gmail.com" },
+      { type: "contact", title: "Phone", details: "+91 6305696351" },
+      { type: "contact", title: "Location", details: "Miryalaguda, Hyderabad" },
+      { type: "contact", title: "LinkedIn", details: "LinkedIn Profile", link: "https://www.linkedin.com/in/shashikanthvarma" }, // Placeholder link
+      { type: "contact", title: "LeetCode", details: "LeetCode Profile", link: "https://leetcode.com/Mshashikanth1/" }, // Placeholder link
+      { type: "contact", title: "GitHub", details: "GitHub Profile", link: "https://github.com/Mshashikanth1" }, // Placeholder link
+
+      // Education
+      { type: "education", title: "B.tech CSE", details: "Institute of Aeronautical Engineering Hyderabad, July 2018 - July 2022, CGPA: 8.2" },
+
+      // Experience - Aditya Birla pivot
+      { type: "experience", company: "Aditya Birla pivot", role: "Software Development Engineer 2", duration: "August 2024 - Present", details: "Designed and developed 10+ scalable backend services for platform features including order processing, credit management, and checkout workflows, improving system throughput by 30%." },
+      { type: "experience", company: "Aditya Birla pivot", role: "Software Development Engineer 2", duration: "August 2024 - Present", details: "Built and maintained 3 major chatbot integrations, reducing support tickets by 25% and enabling self-serve operations for thousands of users." },
+      { type: "experience", company: "Aditya Birla pivot", role: "Software Development Engineer 2", duration: "August 2024 - Present", details: "Developed 5+ internal data dashboards for business stakeholders to monitor financial and operational KPIs, reducing manual reporting time by 40%." },
+      { type: "experience", company: "Aditya Birla pivot", role: "Software Development Engineer 2", duration: "August 2024 - Present", details: "Engineered automated solutions for migrating 100,000+ rows of financial data (orders, credit limits, overdue interest) from Excel sheets to structured databases, cutting manual effort by 90%." },
+      { type: "experience", company: "Aditya Birla pivot", role: "Software Development Engineer 2", duration: "August 2024 - Present", details: "Worked on invoice generation, validation, and order checkout modules, achieving 99.9% uptime and reducing processing latency by 15%." },
+      { type: "experience", company: "Aditya Birla pivot", role: "Software Development Engineer 2", duration: "August 2024 - Present", details: "Contributed to the architecture and implementation of credit enabler systems supporting 10,000+ customer eligibility checks per month." },
+      { type: "experience", company: "Aditya Birla pivot", role: "Software Development Engineer 2", duration: "August 2024 - Present", details: "Collaborated with 6+ cross-functional teams (product, design, QA, and business) to deliver features on time with a 98% release success rate." },
+      { type: "experience", company: "Aditya Birla pivot", role: "Software Development Engineer 2", duration: "August 2024 - Present", details: "Followed engineering best practices in code quality, testing, and CI/CD, increasing deployment frequency by 3 and reducing rollback incidents to near zero." },
+
+      // Experience - Jsw one platforms
+      { type: "experience", company: "Jsw one platforms", role: "Software Development Engineer 1", duration: "August 2022 - August 2024", details: "Enhanced refund and cashback logic within the Order Management System, increasing financial transaction accuracy by 30% and improving reliability for 10,000+ monthly orders." },
+      { type: "experience", company: "Jsw one platforms", role: "Software Development Engineer 1", duration: "August 2022 - August 2024", details: "Implemented key order lifecycle features including cancellation, confirmation, and revocation of planned shipments, reducing order processing errors by 25%." },
+      { type: "experience", company: "Jsw one platforms", role: "Software Development Engineer 1", duration: "August 2022 - August 2024", details: "Optimized shipment-to-payment reconciliation logic in the Payment Service, improving ledger accuracy across buyer and seller accounts by 40% within the Batua microservice." },
+      { type: "experience", company: "Jsw one platforms", role: "Software Development Engineer 1", duration: "August 2022 - August 2024", details: "Contributed to the design and development of a centralized Notification Service that now handles 50,000+ event-driven messages per day, improving system-wide communication reliability." },
+      { type: "experience", company: "Jsw one platforms", role: "Software Development Engineer 1", duration: "August 2022 - August 2024", details: "Implemented robust APIs in the Payment Microservice to enable seamless interaction between payment and order objects using the CommerceTools platform, reducing integration latency by 20%." },
+      { type: "experience", company: "Jsw one platforms", role: "Software Development Engineer 1", duration: "August 2022 - August 2024", details: "Supported the development of Credit Management and Plant Supply workflows, enhancing business operations and finance integration, resulting in 15% faster credit validation and improved supply coordination." },
+
+      // Experience - Tvarana
+      { type: "experience", company: "Tvarana", role: "Netsuite Developer 1", duration: "Jan 2022 - August 2022", details: "Actively contributed to 8+ customization projects in NetSuite, tailoring workflows and modules to meet specific business requirements across finance and operations teams." },
+      { type: "experience", company: "Tvarana", role: "Netsuite Developer 1", duration: "Jan 2022 - August 2022", details: "Developed 15+ custom SuiteScripts enabling bulk insert, update, and deletion of NetSuite records and file objects, reducing manual effort by 70%." },
+      { type: "experience", company: "Tvarana", role: "Netsuite Developer 1", duration: "Jan 2022 - August 2022", details: "Built 3+ business dashboards and audit analysis tools that improved financial visibility and helped identify 10-15% cost-cutting opportunities." },
+      { type: "experience", company: "Tvarana", role: "Netsuite Developer 1", duration: "Jan 2022 - August 2022", details: "Supported optimization of business processes through automation and data-driven enhancements within the NetSuite ecosystem, reducing operational turnaround time by 25%." },
+
+      // Skills - Programming Languages
+      { type: "skill", category: "Programming Languages", title: "PostgreSQL", details: "PostgreSQL" },
+      { type: "skill", category: "Programming Languages", title: "Bash", details: "Bash" },
+      { type: "skill", category: "Programming Languages", title: "Python", details: "Python" },
+      { type: "skill", category: "Programming Languages", title: "Java", details: "Java" },
+      { type: "skill", category: "Programming Languages", title: "JavaScript", details: "JavaScript" },
+
+      // Skills - Libraries/Frameworks
+      { type: "skill", category: "Libraries/Frameworks", title: "Spring Boot", details: "Spring Boot" },
+      { type: "skill", category: "Libraries/Frameworks", title: "Spring WebFlux", details: "Spring WebFlux" },
+      { type: "skill", category: "Libraries/Frameworks", title: "Django", details: "Django" },
+      { type: "skill", category: "Libraries/Frameworks", title: "Spring Security", details: "Spring Security" },
+
+      // Skills - Tools / Platforms
+      { type: "skill", category: "Tools / Platforms", title: "Google Cloud Platforms", details: "Google Cloud Platforms" },
+      { type: "skill", category: "Tools / Platforms", title: "Amazon Web Services", details: "Amazon Web Services" },
+      { type: "skill", category: "Tools / Platforms", title: "Redis", details: "Redis" },
+      { type: "skill", category: "Tools / Platforms", title: "Kafka", details: "Kafka" },
+      { type: "skill", category: "Tools / Platforms", title: "Open Search", details: "Open Search" },
+      { type: "skill", category: "Tools / Platforms", title: "NetSuite", details: "NetSuite" },
+      { type: "skill", category: "Tools / Platforms", title: "SuiteScript", details: "SuiteScript" },
+      { type: "skill", category: "Tools / Platforms", title: "Figma", details: "Figma" },
+      { type: "skill", category: "Tools / Platforms", title: "Postman", details: "Postman" },
+      { type: "skill", category: "Tools / Platforms", title: "Jira", details: "Jira" },
+      { type: "skill", category: "Tools / Platforms", title: "Confluence", details: "Confluence" },
+      { type: "skill", category: "Tools / Platforms", title: "Grafana", details: "Grafana" },
+      { type: "skill", category: "Tools / Platforms", title: "Kibana", details: "Kibana" },
+      { type: "skill", category: "Tools / Platforms", title: "AWS (EC2, S3, Docker, Kubernetes, Jenkins, CI/CD Pipelines)", details: "AWS (EC2, S3, Docker, Kubernetes, Jenkins, CI/CD Pipelines)" },
+
+      // Skills - Databases
+      { type: "skill", category: "Databases", title: "Postgres", details: "Postgres" },
+      { type: "skill", category: "Databases", title: "MySQL", details: "MySQL" },
+
+      // Projects / Open-Source - Retrieval Augmented Generation
+      {
+        type: "project",
+        title: "Retrieval Augmented Generation",
+        technologies: "Python, LLMs, Docker, Pandas, Vector DBs",
+        details: "Addressed the challenge of fine-tuning large language models (LLMs) on real-time data by implementing a RAG (Retrieval-Augmented Generation) pipeline, improving response accuracy by 35% without model retraining.",
+        link: "https://github.com/Mshashikanth1/RAG-LLM" // Placeholder, replace with actual link
+      },
+      {
+        type: "project",
+        title: "Retrieval Augmented Generation",
+        technologies: "Python, LLMs, Docker, Pandas, Vector DBs",
+        details: "Utilized an open-source LLM to process 100,000+ domain-specific data points, eliminating the need for heavy GPU resources and reducing fine-tuning costs by 80%."
+      },
+      {
+        type: "project",
+        title: "Retrieval Augmented Generation",
+        technologies: "Python, LLMs, Docker, Pandas, Vector DBs",
+        details: "Designed a scalable indexing and retrieval system capable of fetching relevant context in <200 ms, enabling highly accurate and context-aware responses for production-like workloads."
+      },
+      {
+        type: "project",
+        title: "Retrieval Augmented Generation",
+        technologies: "Python, LLMs, Docker, Pandas, Vector DBs",
+        details: "Enabled cost-efficient and scalable LLM usage through lightweight retrieval strategies, supporting 10,000+ queries per day with minimal infrastructure overhead."
+      },
+
+      // Projects / Open-Source - Social Media Backend
+      {
+        type: "project",
+        title: "Social Media Backend",
+        technologies: "Spring Boot, Java 17, Neo4j, Open Search, Redis, PostgreSQL",
+        details: "Built a full-featured social media application using Spring Boot, implementing 20+ core features inspired by platforms like Twitter and Instagram (posts, comments, likes, followers, timelines).",
+        link: "https://github.com/Mshashikanth1/Social-Media-Backend" // Placeholder, replace with actual link
+      },
+      {
+        type: "project",
+        title: "Social Media Backend",
+        technologies: "Spring Boot, Java 17, Neo4j, Open Search, Redis, PostgreSQL",
+        details: "Leveraged Neo4j (graph database) to model and query 100,000+ user-relationship interactions, enabling efficient traversal of followers, likes, and engagement graphs."
+      },
+      {
+        type: "project",
+        title: "Social Media Backend",
+        technologies: "Spring Boot, Java 17, Neo4j, Open Search, Redis, PostgreSQL",
+        details: "Implemented features such as personalized timelines, content recommendations, and relationship graphs using optimized Cypher queries, improving recommendation accuracy by 30%."
+      },
+      {
+        type: "project",
+        title: "Social Media Backend",
+        technologies: "Spring Boot, Java 17, Neo4j, Open Search, Redis, PostgreSQL",
+        details: "Utilized Redis to cache frequently accessed data (user profiles, timelines, follower lists), reducing response times by 40% and cutting database load by 60%."
+      },
+      {
+        type: "project",
+        title: "Social Media Backend",
+        technologies: "Spring Boot, Java 17, Neo4j, Open Search, Redis, PostgreSQL",
+        details: "Gained hands-on experience with modern backend architecture, caching strategies, and graph-based data modeling while building a system capable of handling 10,000+ simulated requests per day."
+      },
+
+      // Certifications
+      { type: "certification", title: "Certifications", details: "All Achievements Repo - various math, science, coding contests", link: "https://github.com/Mshashikanth1/Achievements" } // Placeholder link
+    ];
+
+    const pokemonCount = resumeData.length; // Update pokemonCount to match the number of resume items
+
+    // Map resumeData details to resume lines for hover dialogs
+    const resumeLines = [];
+    resumeData.forEach(item => {
+      const emotions = ["😊","🔥","💥","🌟","💫","💦","🌸","✨","😆","🦄"];
+      const emotion = emotions[Math.floor(Math.random()*emotions.length)];
+      let line = "";
+
+      if (item.type === "contact") {
+        line = `Shashi's ${item.title} is ${item.details}. Reach out! ${emotion}`;
+      } else if (item.type === "education") {
+        line = `Shashi earned a ${item.title} from ${item.details.split(',')[0]} with a CGPA of ${item.details.split('CGPA: ')[1]}. ${emotion}`;
+      } else if (item.type === "experience") {
+        line = `At ${item.company}, Shashi worked as a ${item.role} from ${item.duration}. He ${item.details.toLowerCase()}. ${emotion}`;
+      } else if (item.type === "skill") {
+        line = `Shashi is proficient in ${item.title} within ${item.category}. He uses it for ${item.details.toLowerCase()}. ${emotion}`;
+      } else if (item.type === "project") {
+        line = `Shashi's project, "${item.title}", involved ${item.technologies}. A key achievement: ${item.details}. ${emotion}`;
+      } else if (item.type === "certification") {
+        line = `Shashi holds a certification in ${item.title}. Details: ${item.details}. ${emotion}`;
+      }
+      resumeLines.push(line);
+    });
+
+    // Add more generic, engaging lines to reach a higher quantity (e.g., 100)
+    const genericAchievements = [
       "Shashi forges backend services that scale to infinity and beyond 🚀.",
       "With Shashi at the helm, support tickets vanish like ghosts in the machine 👻.",
       "Shashi crafts dashboards so insightful, they reveal the future of data 🔮.",
@@ -252,13 +458,232 @@
       "He models user interactions in Neo4j, revealing the secret heart of the system ❤️.",
       "Recommendation accuracy is up by 30%, a testament to Shashi's data wizardry 🧙‍♂️.",
       "With caching, response times are down by 40%, a lightning-fast experience for all ⚡.",
+      "Shashi’s eyes gleamed with unyielding fire 🔥👀 as he stepped into the realm of software",
+ "ready to turn lines of code into miracles 💻✨.",
+"Fingers flew over the keyboard ⌨️⚡ as if he were dueling invisible enemies in a storm of code 🌪️",
+ "each line a strike sharper than a katana ⚔️.",
+"The screen reflected his determination 💡",
+ "every function call a pulse of life in the digital battlefield 🛡️.",
+"Built scalable backend services", "improving throughput by 30% 📈⚡",
+ "systems bending to his will as if enchanted.",
+"Implemented chatbots 🤖💬 reducing support tickets by 25%",
+ "loyal companions blinking at his command ✨.","Developed dashboards 📊🖌️",
+ "cutting manual reporting time by 40%",
+ "each update a treasure revealed in the labyrinth of numbers 🗝️🌌.",
+"Automated migration pipelines ⚡🛠️", "reducing effort by 90%",
+ "guiding hundreds of thousands of rows like rivers of light 🌊✨.",
+"Optimized invoice generation 💳🔥", "achieving 99.9% uptime",
+ "servers humming in harmony with his mastery 🎶.",
+"Enhanced refund and cashback logic 💰⚡ by 30%",
+ "each calculation a duel against chaos ⚔️.","Shashi gritted his teeth 😤",
+ "heart racing ❤️‍🔥 as the database migration unfolded like a perilous cliffside battle 🏔️.",
+"With a deep breath 🌬️", "he whispered to himself",
+ "“I will tame this chaos… no matter what.” 🗡️✨",
+"Chatbots sprang to life under his hands 🤖🌟",
+ "blinking like small companions ready to fight by his side ⚔️.",
+"Every dashboard update felt like opening a treasure chest 🏆🌌 hidden deep within the streams of data 📊.",
+"The CI/CD pipeline roared to life 🚀🔥",
+ "and Shashi’s grin lit up the room 😎✨",
+ "triumphant like a hero after the storm 🌩️🏆.",
+"Even when bugs struck like sneaky assassins in the shadows 🐛🗡️",
+ "he countered with unshakable resolve 💪.",
+"Notifications danced across the screen 🌸💫 like falling sakura petals",
+ "orchestrated with poetic precision 🎶.",
+"Each successful deployment sent a shiver of victory down his spine 🏅⚡",
+ "the thrill of battle surging in every vein ❤️‍🔥.",
+"The order processing system pulsed with life under his hands 🤖⚡",
+ "a giant mech responding to his every command 🏯✨.",
+"Late nights blurred into a montage 🌙💻 of glowing screens and racing hearts 💖",
+ "the soundtrack of his relentless passion 🎶🔥.",
+"He imagined the users smiling 😊✨",
+ "unaware of the epic struggle behind every seamless transaction 💻🛡️.",
+"Data flowed like rivers of light 🌊✨",
+ "and Shashi leapt from table to table 🦸‍♂️",
+ "a lone guardian in a digital battlefield 🛡️.",
+"Each solved bug felt like a demon banished 👹⚔️",
+ "leaving the world a little brighter under his watch 🌟.",
+"Social media backend improved recommendation accuracy by 30% 📊🔥",
+ "interactions pulsing with life under his vigilant care 👀💻.",
+"Engineered automated solutions migrating 100","000+ rows of data 📦⚡",
+ "orchestrated like a symphony of order 🎼✨.",
+"Contributed to architecture of credit enabler systems 🏦🛡️ for 10",
+"000+ customers", "each check a duel fought and won ⚔️💪.",
+"Collaborated with 6+ cross-functional teams 🤝🌟",
+ "achieving 98% release success",
+ "teamwork like a perfectly choreographed anime battle 🎬⚡.",
+"Followed CI/CD best practices 🏗️🚀", "increasing deployment frequency 3x ⚡",
+ "rollbacks vanished like defeated foes 💨.",
+"Implemented key order lifecycle features 🔄💳", "reducing errors by 25%",
+ "confirmations and cancellations dancing to his command 💃✨.",
+"Optimized shipment-to-payment reconciliation 📦💰",
+ "improving ledger accuracy by 40%", "numbers harmonizing under his gaze 🎶💻.",
+"Centralized Notification Service handling 50","000+ messages/day 🔔⚡",
+ "orchestrated like falling stars 🌠 under his guidance.",
+"Implemented robust Payment Microservice APIs 💳🔗", "reducing latency by 20%",
+ "interactions flowing like magic 🌌✨.","Developed custom SuiteScripts 📝⚡",
+ "reducing manual effort by 70%", "executed like magical scrolls 📜✨.",
+"Built dashboards 📊🖌️",
+ "improving financial visibility and identifying hidden opportunities 💎🔍.",
+"Optimized business processes ⏱️💻", "reducing turnaround time by 25%",
+ "efficiency flowing like rivers of light 🌊✨.",
+"Gained hands-on experience with modern backend architecture 🌐💻 and caching strategies 🧊⚡",
+ "systems humming under his command 🎶.","Leveraged Neo4j to model and query 100",
+"000+ user interactions 🔗💡", "graphs pulsing like veins of life ❤️.",
+"Implemented features improving recommendation accuracy by 30% 🌟📊",
+ "timelines flowing like rivers of joy 🌊😊.",
+"Cached frequently accessed data ⚡💻", "reducing response times by 40%",
+ "speed shimmering like magic crystals 💎✨.",
+ "Shashi’s mind blazes like a supernova 🌟🔥",
+ "illuminating solutions where others see only darkness 🌌.",
+"Every system he touches transforms under his hands ✨🖥️",
+ "humming with perfection 🎵.","His determination is unstoppable 💪⚡",
+ "like a hero racing through stormy skies 🌩️🏃‍♂️.",
+"Shashi writes code with the precision of a master swordsman ⚔️👨‍💻 in a duel.",
+"Even the most tangled databases bow to his insight 🏯📊.",
+"His problem-solving sparks like lightning ⚡🧠", "striking true every time 🎯.",
+"Shashi turns challenges into victories 🏆🔥 as effortlessly as breathing 🌬️.",
+"His intellect shines brighter than a thousand city lights 🌃💡.",
+"Every deployment he touches is a flawless performance 🎬💻",
+ "admired by all 👏.",
+"Shashi’s creativity turns mundane scripts into epic masterpieces 🎨🖋️.",
+"Bugs flee at the sight of his determined gaze 👀💥.",
+"His technical vision is so sharp it feels almost prophetic 🔮✨.",
+"Every API he builds flows like a river of light 🌊💫",
+ "elegant and unstoppable 🌟.",
+"Shashi’s leadership inspires teams 🏹🤝 to rise like heroes in a saga 🌄.",
+"His dedication is a blazing torch 🔥🕯️",
+ "guiding projects through darkness 🌌.",
+"Every challenge becomes a stepping stone under his fearless resolve 🪨🦸‍♂️.",
+"Shashi commands cloud platforms ☁️⚡ like a wizard commanding elemental forces 🧙‍♂️.",
+"He transforms late nights 🌙💻 into triumphs 🏅",
+ "coding with unwavering passion ❤️‍🔥.","Every script he writes feels alive ✨💻",
+ "pulsing with perfection 💖.",
+"Shashi sees possibilities 🌈👁️ where others see dead ends 🚫.",
+"His skill with microservices 🤖⚙️ is legendary",
+ "orchestrating harmony from chaos 🎶.","Shashi’s focus is absolute 🎯🧘‍♂️",
+ "like a lone warrior sharpening his blade ⚔️.",
+"Every line of code he writes carries weight", "beauty", "and precision 💎🖋️.",
+"He navigates complex systems like a hero through a labyrinth 🏰🗝️",
+ "always victorious 🏆.","Shashi’s logic is flawless 🧩✔️",
+ "slicing through complexity with ease ✨.",
+"Every integration he completes feels like a victory parade 🎉💻 across digital skies 🌌.",
+"His presence inspires confidence in teammates 🤝🌟",
+ "like a seasoned captain at the helm 🚢.",
+"Shashi’s innovations illuminate paths 🌟🛤️ where none existed 🌌.",
+"Even the fiercest bugs tremble 🐛😱 under his relentless resolve 💪.",
+"His debugging skills are legendary ⚔️🐞",
+ "striking true with perfect timing ⏱️.",
+"Shashi transforms repetitive tasks 🔄💻 into streamlined magic ✨🧙‍♂️.",
+"Every challenge he faces is met with courage 💖🦸‍♂️ and unmatched skill 🎯.",
+"His architectural designs are masterpieces 🏯🖌️",
+ "elegant as a cathedral of code ⛪💻.",
+"Shashi’s mind races faster than any system 🏃‍♂️💨",
+ "predicting and preventing errors effortlessly 🔮.",
+"Each project milestone shines brighter 🌟🎯 under his guidance 🦸‍♂️.",
+"Shashi’s teamwork is like a perfectly choreographed anime battle scene 🎬⚔️—flawless in execution 👏.",
+"He carries the weight of complex systems ⚖️💻 with the strength of a hero 🦸‍♂️.",
+"His solutions are as elegant as a falling sakura petal 🌸🍃",
+ "yet as powerful as a tidal wave 🌊💥.",
+"Shashi’s coding flows like a river of light 🌊✨",
+ "unstoppable and breathtaking 🌟.",
+"Every deployment he touches is smoother than silk 🧵💻",
+ "flawless in every detail 🌈.","He reads logs like a seasoned strategist 📜🧠",
+ "anticipating challenges before they appear 🔮.",
+"Shashi’s presence in a project feels like a blessing 🌸🙏",
+ "guiding all toward success 🏆.",
+"His technical intuition is so sharp it borders on supernatural 👁️‍🗨️✨.",
+"Even in chaos 🌪️", "he moves with calm precision 🧘‍♂️",
+ "a hero among engineers 🦸‍♂️.",
+"Shashi’s leadership turns ordinary teams 🌱🤝 into legends 🌟🏆.",
+"Every database he touches becomes a palace of order 🏯📊 and clarity ✨.",
+"His problem-solving is swift ⚡🗡️",
+ "striking down inefficiency like a blade 🗡️.",
+"Shashi’s innovation brings entire systems to life 🌱💻",
+ "pulsing with vitality ❤️.","His focus pierces complexity 🔍💡",
+ "uncovering solutions others miss 🌟.",
+"Every project he finishes leaves a trail of awe 😲✨ and admiration 👏.",
+"Shashi’s resilience is unmatched 🛡️💪",
+ "enduring challenges like a hero in an endless saga 🏞️.",
+"His analytical mind slices through problems 🧠⚔️ with surgical precision 🏥.",
+"Each integration he performs flows like a symphony 🎼💻 of perfection 🌟.",
+"Shashi’s dedication shines brighter than any accolade 🏆✨",
+ "evident in every success 🌈.","He anticipates issues before they appear 🔮👀",
+ "a visionary in code and design 🖥️🧠.",
+"Every system he touches hums with harmony 🎶💻",
+ "a testament to his mastery 👑.",
+"Shashi’s creativity turns routine tasks 🔄🎨 into epic feats ⚔️✨.",
+"His contributions feel larger than life 🌟🌍",
+ "like a legendary hero in the making 🦸‍♂️.",
+"He inspires awe 😲🔥 with every achievement",
+ "leaving teammates and users amazed 🤩.",
+"Shashi’s debugging feels like a heroic duel ⚔️🐞",
+ "each victory satisfying and thrilling 🏆.",
+"Every code review he performs sharpens the team’s abilities ✨🖋️.",
+"His impact stretches far beyond his immediate work 🌌💻",
+ "touching projects like a ripple of light 🌊✨.",
+"Shashi commands every tool and language 🧰🖥️ with the finesse of a master 🎓.",
+"Every solution he delivers carries elegance 💎🖋️ and precision 🎯",
+ "admired by all 👏.","His technical brilliance flows effortlessly 🌊💡",
+ "bending complex systems to his will ✨.",
+"Shashi moves through challenges like a hero 🦸‍♂️🏔️ navigating trials",
+ "unyielding and unstoppable 💪.",
+"His problem-solving inspires teammates 🌟🤝 to rise and shine with him 🌅.",
+"Every deployment he leads is a flawless spectacle 🎇💻",
+ "celebrated silently by systems themselves 🤖✨.",
+"Shashi’s innovations resonate like an epic soundtrack 🎶🌌",
+ "stirring pride and awe 😲.",
+"His insights illuminate the dark corners of any project 🌌💡",
+ "revealing hidden possibilities 🌈.",
+"Every achievement is a brushstroke 🖌️🌟 in the masterpiece of his career 🏆.",
+"Shashi’s efficiency is legendary ⚡💻",
+ "cutting through obstacles with unrivaled skill 🗡️.",
+"His calm under pressure turns crises 🌪️💻 into opportunities for triumph 🏆✨.",
+"Every integration and API he builds becomes a monument 🏯✨ of elegance.",
+"Shashi’s intellect blazes through complex systems 🌟💻 like a comet across the night sky 🌌.",
+"His attention to detail is as sharp as a finely honed blade ⚔️💎.",
+"Every project milestone is brighter 🌄✨ for his presence 🦸‍♂️.",
+"Shashi’s vision shapes systems into perfectly orchestrated symphonies 🎼💻 of code.",
+"He turns mundane tasks into adventures 🏹✨",
+ "infusing each with brilliance and life 💖.",
+"His mastery of multiple languages and frameworks is awe-inspiring 🌟📚",
+ "like a polymath hero 🦸‍♂️.",
+"Shashi’s leadership feels like a guiding light 🌟🕯️",
+ "ensuring every team member reaches their potential 🚀.",
+"Every challenge he overcomes is a new chapter 📖⚔️ in his legendary saga 🌌.",
+"His solutions are precise 🎯", "elegant ✨",
+ "and almost poetic 🖋️ in execution.",
+"Shashi moves through deadlines 🏃‍♂️⏳ like a hero sprinting across a battlefield ⚔️",
+ "unstoppable.",
+"His attention to system performance transforms ordinary applications 🖥️💨 into works of art 🎨.",
+"Every optimization he performs leaves systems faster ⚡💻", "smarter 🧠",
+ "and more elegant ✨.","Shashi’s work ethic radiates 🔥🌟 like a hero’s aura",
+ "inspiring all who witness it 👀.",
+"He anticipates needs and prevents failures 🔮💡 like a seer of the digital realm 🧙‍♂️.",
+"Each time he debugs ⚔️🐛",
+ "it’s as if he’s cutting through chaos with a legendary sword 🗡️✨.",
+"Shashi’s mentorship elevates teammates 🦸‍♂️🤝",
+ "turning ordinary developers into champions 🏆.",
+"Every challenge he tackles is met with calm confidence 🧘‍♂️🌟 that inspires trust 🤝.",
+"His presence ensures projects succeed with near-mythical reliability 🏯✨.",
+"Shashi’s insights into systems feel like visions of the future 🔮💻",
+ "ahead of their time ⏳.","Each database schema he designs is a fortress 🏰📊",
+ "elegant and unbreakable ⚡.","His technical brilliance flows effortlessly 🌊💡",
+ "a river of skill and creativity 🎨.",
+"Every late-night coding session 🌙💻 is an epic montage 🎬",
+ "showcasing his relentless pursuit of excellence 🔥.",
+"Shashi’s debugging instincts strike faster ⚡🐞 than any warning",
+ "always precise 🎯.","He orchestrates systems with grace 💫🎼",
+ "turning complex interdependencies into harmonious flows 🌊✨.",
+"Every feature he delivers feels alive ✨💻",
+ "infused with his meticulous care 💖.",
+"Shashi Kanth Varma is not just an engineer 🖥️🦸‍♂️—he is a legend 🌟🔥",
+ "a hero of the digital age ⚡🏆."
     ];
 
-    const resumeLines = [];
-    for(let i=0;i<pokemonCount;i++){
-      let line = achievements[i % achievements.length];
+    while (resumeLines.length < 100) { // Ensure at least 100 lines for variety
       const emotions = ["😊","🔥","💥","🌟","💫","💦","🌸","✨","😆","🦄"];
       const emotion = emotions[Math.floor(Math.random()*emotions.length)];
+      let line = genericAchievements[Math.floor(Math.random() * genericAchievements.length)];
       resumeLines.push(`${line} ${emotion}`);
     }
 
@@ -308,9 +733,9 @@
     }
 
     // ===== Lazy load Pokémon =====
-    async function fetchPokemonData(index){
+    async function fetchPokemonData(pokemonId, originalIndex){
       try{
-        const res = await fetchWithTimeout(`https://pokeapi.co/api/v2/pokemon/${index}`);
+        const res = await fetchWithTimeout(`https://pokeapi.co/api/v2/pokemon/${pokemonId}`);
         const data = await res.json();
         
         let sprite, sprite2, animatedSprite;
@@ -353,21 +778,26 @@
         const types = data.types.map(t=>t.type.name);
         const name = data.name;
         const cry = data.cries?.latest || data.cries?.legacy; // Get the cry URL, prioritizing 'latest'
-        const abilities = data.abilities.map(a => a.ability.name).join(', ');
-        const height = data.height;
-        const weight = data.weight;
-        return {sprite, sprite2, types, name, animatedSprite, cry, abilities, height, weight};
+
+        // Assign resume item data using originalIndex
+        const resumeItem = resumeData[originalIndex - 1];
+        console.log("Fetched resume item:", resumeItem); // Debugging line
+        
+        return {sprite, sprite2, types, name, animatedSprite, cry, resumeItem};
       }catch(e){
-        console.error(`Failed to fetch pokemon ${index}:`, e);
+        console.error(`Failed to fetch pokemon ${pokemonId}:`, e);
         return null;
       }
     }
 
     // ===== Create Pokémon elements =====
-    function createPokemon(index){
+    function createPokemon(originalIndex){
       const div = document.createElement('div');
       div.className='pokemon';
-      div.dataset.index=index;
+      // Assign a random Pokémon ID for variety
+      const randomPokemonId = Math.floor(Math.random() * pokemonCount) + 1;
+      div.dataset.index = randomPokemonId;
+      div.dataset.originalIndex = originalIndex; // Keep original index for resume item mapping
 
       const img=document.createElement('img');
       div.appendChild(img);
@@ -395,7 +825,7 @@
           const div=entry.target;
           const img=div.querySelector('img');
           if(!img.src){
-            const data=await fetchPokemonData(div.dataset.index);
+            const data=await fetchPokemonData(div.dataset.index, div.dataset.originalIndex);
             if(data && data.sprite){
               img.src=data.sprite;
               div.dataset.sprite1=data.sprite;
@@ -408,16 +838,20 @@
               if (data.cry) {
                 div.dataset.cry = data.cry;
               }
-              if (data.abilities) {
-                div.dataset.abilities = data.abilities;
+              div.dataset.types=data.types.join(','); // Keep original types for particle effects
+
+              // Store resume item data in dataset
+              if (data.resumeItem) {
+                div.dataset.resumetype = data.resumeItem.type;
+                div.dataset.resumetitle = data.resumeItem.title;
+                div.dataset.resumedetails = data.resumeItem.details;
+                div.dataset.resumelink = data.resumeItem.link || '';
+                div.dataset.resumecategory = data.resumeItem.category || '';
+                div.dataset.resumecompany = data.resumeItem.company || '';
+                div.dataset.resumerole = data.resumeItem.role || '';
+                div.dataset.resumeduration = data.resumeItem.duration || '';
+                div.dataset.resumetechnologies = data.resumeItem.technologies || '';
               }
-              if (data.height) {
-                div.dataset.height = data.height;
-              }
-              if (data.weight) {
-                div.dataset.weight = data.weight;
-              }
-              div.dataset.types=data.types.join(',');
             }
           }
         }
