@@ -20,6 +20,7 @@
           overflow-x:auto;
           scroll-behavior:smooth;
           padding:0 50px;
+          transition: all 0.5s ease; /* Smooth transition for layout changes */
         }
         .pokemon {
           position:relative;
@@ -31,11 +32,11 @@
           transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* fun jump easing */
         }
         .pokemon img {
-          width:80px;
-          height:80px;
+          width:125px;
+          height:125px;
           object-fit:contain;
           image-rendering: pixelated;
-          transition: transform 0.3s ease;
+          transition: transform 0.3s ease, width 0.5s ease, height 0.5s ease, opacity 0.2s ease-out; /* Smooth transition for size and opacity changes */
         }
         .dialog {
           position:absolute;
@@ -51,7 +52,7 @@
           text-align:center;
           opacity:0;
           pointer-events:none;
-          transition: opacity 0.2s ease;
+          transition: opacity 0.2s ease, width 0.5s ease, font-size 0.5s ease; /* Smooth transition for dialog changes */
           z-index:10;
         }
         canvas {
@@ -61,8 +62,47 @@
           pointer-events:none;
           z-index:5;
         }
+
+        @media (max-width: 768px) {
+          #battlefield {
+            flex-direction: column;
+            overflow-x: hidden;
+            overflow-y: auto;
+            padding: 50px 0;
+            white-space: normal;
+            align-items: center;
+          }
+
+          .pokemon {
+            margin: 25px 0; /* Increased margin for vertical layout */
+          }
+
+          .pokemon img {
+            width: 90px; /* Slightly smaller */
+            height: 90px;
+          }
+
+          .dialog {
+            width: 180px; /* Slightly smaller */
+            font-size: 11px;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .pokemon img {
+            width: 80px;
+            height: 80px;
+          }
+
+          .dialog {
+            width: 150px;
+            font-size: 10px;
+          }
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <script src="https://sfxr.me/riffwave.js"></script>
+    <script src="https://sfxr.me/sfxr.js"></script>
 </head>
 <body>
 <div id="battlefield"></div>
@@ -76,499 +116,54 @@
     canvas.height = window.innerHeight;
     window.addEventListener('resize',()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight});
 
+    // ===== Sound Effects =====
+
+
+    const dialogSound = sfxr.toAudio(sfxr.generate("blipSelect"));
+
+    // ===== Background Music =====
+    const backgroundAudio = new Audio('backGroudAudio.mp3');
+    backgroundAudio.loop = true;
+    backgroundAudio.volume = 0.2; // Set a lower volume for background music
+    backgroundAudio.play().catch(e => {
+        console.log("Autoplay prevented. User interaction needed to play background music.", e);
+        // Optionally, add a UI element to allow user to start music
+    });
+
     // ===== Resume lines with anime-style emotion =====
     const achievements = [
-
-    "Shashi’s mind blazes like a supernova 🌟🔥",
- "illuminating solutions where others see only darkness 🌌.",
-"Every system he touches transforms under his hands ✨🖥️",
- "humming with perfection 🎵.","His determination is unstoppable 💪⚡",
- "like a hero racing through stormy skies 🌩️🏃‍♂️.",
-"Shashi writes code with the precision of a master swordsman ⚔️👨‍💻 in a duel.",
-"Even the most tangled databases bow to his insight 🏯📊.",
-"His problem-solving sparks like lightning ⚡🧠", "striking true every time 🎯.",
-"Shashi turns challenges into victories 🏆🔥 as effortlessly as breathing 🌬️.",
-"His intellect shines brighter than a thousand city lights 🌃💡.",
-"Every deployment he touches is a flawless performance 🎬💻",
- "admired by all 👏.",
-"Shashi’s creativity turns mundane scripts into epic masterpieces 🎨🖋️.",
-"Bugs flee at the sight of his determined gaze 👀💥.",
-"His technical vision is so sharp it feels almost prophetic 🔮✨.",
-"Every API he builds flows like a river of light 🌊💫",
- "elegant and unstoppable 🌟.",
-"Shashi’s leadership inspires teams 🏹🤝 to rise like heroes in a saga 🌄.",
-"His dedication is a blazing torch 🔥🕯️",
- "guiding projects through darkness 🌌.",
-"Every challenge becomes a stepping stone under his fearless resolve 🪨🦸‍♂️.",
-"Shashi commands cloud platforms ☁️⚡ like a wizard commanding elemental forces 🧙‍♂️.",
-"He transforms late nights 🌙💻 into triumphs 🏅",
- "coding with unwavering passion ❤️‍🔥.","Every script he writes feels alive ✨💻",
- "pulsing with perfection 💖.",
-"Shashi sees possibilities 🌈👁️ where others see dead ends 🚫.",
-"His skill with microservices 🤖⚙️ is legendary",
- "orchestrating harmony from chaos 🎶.","Shashi’s focus is absolute 🎯🧘‍♂️",
- "like a lone warrior sharpening his blade ⚔️.",
-"Every line of code he writes carries weight", "beauty", "and precision 💎🖋️.",
-"He navigates complex systems like a hero through a labyrinth 🏰🗝️",
- "always victorious 🏆.","Shashi’s logic is flawless 🧩✔️",
- "slicing through complexity with ease ✨.",
-"Every integration he completes feels like a victory parade 🎉💻 across digital skies 🌌.",
-"His presence inspires confidence in teammates 🤝🌟",
- "like a seasoned captain at the helm 🚢.",
-"Shashi’s innovations illuminate paths 🌟🛤️ where none existed 🌌.",
-"Even the fiercest bugs tremble 🐛😱 under his relentless resolve 💪.",
-"His debugging skills are legendary ⚔️🐞",
- "striking true with perfect timing ⏱️.",
-"Shashi transforms repetitive tasks 🔄💻 into streamlined magic ✨🧙‍♂️.",
-"Every challenge he faces is met with courage 💖🦸‍♂️ and unmatched skill 🎯.",
-"His architectural designs are masterpieces 🏯🖌️",
- "elegant as a cathedral of code ⛪💻.",
-"Shashi’s mind races faster than any system 🏃‍♂️💨",
- "predicting and preventing errors effortlessly 🔮.",
-"Each project milestone shines brighter 🌟🎯 under his guidance 🦸‍♂️.",
-"Shashi’s teamwork is like a perfectly choreographed anime battle scene 🎬⚔️—flawless in execution 👏.",
-"He carries the weight of complex systems ⚖️💻 with the strength of a hero 🦸‍♂️.",
-"His solutions are as elegant as a falling sakura petal 🌸🍃",
- "yet as powerful as a tidal wave 🌊💥.",
-"Shashi’s coding flows like a river of light 🌊✨",
- "unstoppable and breathtaking 🌟.",
-"Every deployment he touches is smoother than silk 🧵💻",
- "flawless in every detail 🌈.","He reads logs like a seasoned strategist 📜🧠",
- "anticipating challenges before they appear 🔮.",
-"Shashi’s presence in a project feels like a blessing 🌸🙏",
- "guiding all toward success 🏆.",
-"His technical intuition is so sharp it borders on supernatural 👁️‍🗨️✨.",
-"Even in chaos 🌪️", "he moves with calm precision 🧘‍♂️",
- "a hero among engineers 🦸‍♂️.",
-"Shashi’s leadership turns ordinary teams 🌱🤝 into legends 🌟🏆.",
-"Every database he touches becomes a palace of order 🏯📊 and clarity ✨.",
-"His problem-solving is swift ⚡🗡️",
- "striking down inefficiency like a blade 🗡️.",
-"Shashi’s innovation brings entire systems to life 🌱💻",
- "pulsing with vitality ❤️.","His focus pierces complexity 🔍💡",
- "uncovering solutions others miss 🌟.",
-"Every project he finishes leaves a trail of awe 😲✨ and admiration 👏.",
-"Shashi’s resilience is unmatched 🛡️💪",
- "enduring challenges like a hero in an endless saga 🏞️.",
-"His analytical mind slices through problems 🧠⚔️ with surgical precision 🏥.",
-"Each integration he performs flows like a symphony 🎼💻 of perfection 🌟.",
-"Shashi’s dedication shines brighter than any accolade 🏆✨",
- "evident in every success 🌈.","He anticipates issues before they appear 🔮👀",
- "a visionary in code and design 🖥️🧠.",
-"Every system he touches hums with harmony 🎶💻",
- "a testament to his mastery 👑.",
-"Shashi’s creativity turns routine tasks 🔄🎨 into epic feats ⚔️✨.",
-"His contributions feel larger than life 🌟🌍",
- "like a legendary hero in the making 🦸‍♂️.",
-"He inspires awe 😲🔥 with every achievement",
- "leaving teammates and users amazed 🤩.",
-"Shashi’s debugging feels like a heroic duel ⚔️🐞",
- "each victory satisfying and thrilling 🏆.",
-"Every code review he performs sharpens the team’s abilities ✨🖋️.",
-"His impact stretches far beyond his immediate work 🌌💻",
- "touching projects like a ripple of light 🌊✨.",
-"Shashi commands every tool and language 🧰🖥️ with the finesse of a master 🎓.",
-"Every solution he delivers carries elegance 💎🖋️ and precision 🎯",
- "admired by all 👏.","His technical brilliance flows effortlessly 🌊💡",
- "bending complex systems to his will ✨.",
-"Shashi moves through challenges like a hero 🦸‍♂️🏔️ navigating trials",
- "unyielding and unstoppable 💪.",
-"His problem-solving inspires teammates 🌟🤝 to rise and shine with him 🌅.",
-"Every deployment he leads is a flawless spectacle 🎇💻",
- "celebrated silently by systems themselves 🤖✨.",
-"Shashi’s innovations resonate like an epic soundtrack 🎶🌌",
- "stirring pride and awe 😲.",
-"His insights illuminate the dark corners of any project 🌌💡",
- "revealing hidden possibilities 🌈.",
-"Every achievement is a brushstroke 🖌️🌟 in the masterpiece of his career 🏆.",
-"Shashi’s efficiency is legendary ⚡💻",
- "cutting through obstacles with unrivaled skill 🗡️.",
-"His calm under pressure turns crises 🌪️💻 into opportunities for triumph 🏆✨.",
-"Every integration and API he builds becomes a monument 🏯✨ of elegance.",
-"Shashi’s intellect blazes through complex systems 🌟💻 like a comet across the night sky 🌌.",
-"His attention to detail is as sharp as a finely honed blade ⚔️💎.",
-"Every project milestone is brighter 🌄✨ for his presence 🦸‍♂️.",
-"Shashi’s vision shapes systems into perfectly orchestrated symphonies 🎼💻 of code.",
-"He turns mundane tasks into adventures 🏹✨",
- "infusing each with brilliance and life 💖.",
-"His mastery of multiple languages and frameworks is awe-inspiring 🌟📚",
- "like a polymath hero 🦸‍♂️.",
-"Shashi’s leadership feels like a guiding light 🌟🕯️",
- "ensuring every team member reaches their potential 🚀.",
-"Every challenge he overcomes is a new chapter 📖⚔️ in his legendary saga 🌌.",
-"His solutions are precise 🎯", "elegant ✨",
- "and almost poetic 🖋️ in execution.",
-"Shashi moves through deadlines 🏃‍♂️⏳ like a hero sprinting across a battlefield ⚔️",
- "unstoppable.",
-"His attention to system performance transforms ordinary applications 🖥️💨 into works of art 🎨.",
-"Every optimization he performs leaves systems faster ⚡💻", "smarter 🧠",
- "and more elegant ✨.","Shashi’s work ethic radiates 🔥🌟 like a hero’s aura",
- "inspiring all who witness it 👀.",
-"He anticipates needs and prevents failures 🔮💡 like a seer of the digital realm 🧙‍♂️.",
-"Each time he debugs ⚔️🐛",
- "it’s as if he’s cutting through chaos with a legendary sword 🗡️✨.",
-"Shashi’s mentorship elevates teammates 🦸‍♂️🤝",
- "turning ordinary developers into champions 🏆.",
-"Every challenge he tackles is met with calm confidence 🧘‍♂️🌟 that inspires trust 🤝.",
-"His presence ensures projects succeed with near-mythical reliability 🏯✨.",
-"Shashi’s insights into systems feel like visions of the future 🔮💻",
- "ahead of their time ⏳.","Each database schema he designs is a fortress 🏰📊",
- "elegant and unbreakable ⚡.","His technical brilliance flows effortlessly 🌊💡",
- "a river of skill and creativity 🎨.",
-"Every late-night coding session 🌙💻 is an epic montage 🎬",
- "showcasing his relentless pursuit of excellence 🔥.",
-"Shashi’s debugging instincts strike faster ⚡🐞 than any warning",
- "always precise 🎯.","He orchestrates systems with grace 💫🎼",
- "turning complex interdependencies into harmonious flows 🌊✨.",
-"Every feature he delivers feels alive ✨💻",
- "infused with his meticulous care 💖.",
-"Shashi Kanth Varma is not just an engineer 🖥️🦸‍♂️—he is a legend 🌟🔥",
- "a hero of the digital age ⚡🏆.",
-    "Built scalable backend services improving throughput by 30%.",
-    "Implemented chatbots reducing support tickets by 25%.",
-    "Developed dashboards cutting manual reporting time by 40%.",
-    "Automated migration pipelines reducing effort by 90%.",
-    "Optimized invoice generation achieving 99.9% uptime.",
-    "Enhanced refund and cashback logic by 30%.",
-    "Shashi’s eyes narrowed",
- "fingers flying over the keyboard as if he were dueling invisible enemies in a storm of code.",
-"The screen reflected his determination",
- "each line of code a strike sharper than a katana.","He gritted his teeth",
- "heart racing",
- "as the database migration unfolded like a perilous cliffside battle.",
-"With a deep breath", "he whispered to himself",
- "“I will tame this chaos… no matter what.”",
-"Chatbots sprang to life under his hands",
- "blinking like small companions ready to fight by his side.",
-"Every dashboard update felt like opening a treasure chest hidden deep within the labyrinth of numbers.",
-"The CI/CD pipeline roared to life", "and Shashi’s grin lit up the room",
- "triumphant like a hero after the storm.",
-"Even when bugs struck like sneaky assassins in the shadows",
- "he struck back with unshakable resolve.",
-"Notifications danced across the screen like falling sakura petals",
- "and he orchestrated them with poetic precision.",
-"Each successful deployment sent a shiver of victory down his spine",
- "the thrill of battle surging in every vein.",
-"The order processing system pulsed with life under his hands",
- "a giant mech responding to his every command.",
-"Late nights blurred into a montage of glowing screens and racing hearts",
- "the soundtrack of his relentless passion.","He imagined the users smiling",
- "unaware of the epic struggle behind every seamless transaction.",
-"Data flowed like rivers of light", "and Shashi leapt from table to table",
- "a lone guardian in a digital battlefield.",
-"Each solved bug felt like a demon banished",
- "leaving the world a little brighter under his watch.",
-    "Social media backend improved recommendation accuracy 30%.",
-    "Engineered automated solutions migrating 100,000+ rows of data.",
-    "Contributed to architecture of credit enabler systems for 10,000+ customers.",
-    "Collaborated with 6+ cross-functional teams achieving 98% release success.",
-    "Followed CI/CD best practices increasing deployment frequency 3x.",
-    "Implemented key order lifecycle features reducing errors by 25%.",
-    "Optimized shipment-to-payment reconciliation improving ledger accuracy by 40%.",
-    "Centralized Notification Service handling 50,000+ messages/day.",
-    "Implemented robust Payment Microservice APIs reducing latency by 20%.",
-    "Developed custom SuiteScripts reducing manual effort by 70%.",
-    "Built dashboards improving financial visibility and identifying cost-cutting opportunities.",
-    "Optimized business processes reducing turnaround time by 25%.",
-    "Gained hands-on experience with modern backend architecture and caching strategies.",
-    "Leveraged Neo4j to model and query 100,000+ user interactions.",
-    "Implemented features improving recommendation accuracy by 30%.",
-    "Cached frequently accessed data reducing response times by 40%.","Shashi’s eyes gleamed with unyielding fire as he stepped into the realm of software",
- "ready to turn lines of code into miracles.","In the quiet hum of the office",
- "his heartbeat became the rhythm of innovation",
- "each keystroke a declaration of battle.",
-"The first line of backend code he wrote pulsed like a heartbeat",
- "awakening systems that had slept in shadows.",
-"Order processing workflows bent to his will",
- "trembling under his precision and care.",
-"Each dashboard he built shimmered like a crystal palace",
- "revealing secrets hidden in endless streams of data.",
-"Chatbots flickered to life",
- "tiny warriors carrying the weight of thousands of users’ hopes.",
-"Migrating hundreds of thousands of rows of financial data felt like guiding a river through mountains of stone.",
-"He held his breath as the first automated process ran flawlessly",
- "a silent victory only his heart celebrated.",
-"Every credit eligibility check was a duel",
- "and Shashi’s resolve was sharper than the edge of a katana.",
-"Deployment day arrived like a festival of light; servers hummed in harmony with his triumph.",
-"Refund and cashback logic became a battlefield",
- "and his precision carved victory from chaos.",
-"Order lifecycle features danced to his command",
- "each confirmation and cancellation a perfectly choreographed strike.",
-"Payment service reconciliation glimmered with his brilliance",
- "transforming ledgers into elegant symphonies of numbers.",
-"Notifications flashed across screens like shooting stars",
- "and he orchestrated them with the grace of a celestial conductor.",
-"Payment microservices whispered under his control",
- "latency shrinking like shadows before dawn.",
-"Credit management workflows shimmered like a protective shield",
- "safeguarding the flow of business with silent strength.",
-"Each NetSuite customization he crafted was a spell",
- "bending the system to the will of efficiency.",
-"SuiteScripts flowed from his fingers like magical scrolls",
- "reducing manual toil by 70% in an instant.",
-"Dashboards glowed like lanterns in the night",
- "revealing paths to savings hidden in the dark.",
-"Operational processes obeyed him",
- "flowing faster and smoother as if enchanted by his vision.","Python", "Java",
- "SQL—they became instruments in his orchestra of creation",
- "each line a note of brilliance.","Spring Boot and Django obeyed his command",
- "summoning backend worlds as vivid as anime landscapes.",
-"Each successful deployment sent a thrill surging through his veins",
- "a storm of joy and pride.","Users’ smiles became his inspiration",
- "their seamless experience a reward brighter than any treasure.",
-"Large-scale data migrations were mountains to climb",
- "yet he scaled them with the determination of a shounen hero.",
-"Error logs flashed like enemy attacks",
- "and he countered them with lightning-fast fixes.",
-"Every integration was a dance with fate", "and he led the steps flawlessly",
- "guiding chaos into harmony.","Redis caches shimmered like magic crystals",
- "accelerating user timelines with unseen power.",
-"Neo4j graph queries were swords slicing through tangled connections",
- "revealing the hidden path of relationships.",
-"Recommendation systems pulsed with life",
- "their accuracy sharpened under his vigilant gaze.",
-"Servers roared like dragons as he deployed updates",
- "each feature a spark in the night sky.",
-"CI/CD pipelines glowed under his touch",
- "a river of light flowing without interruption.",
-"Rollbacks vanished like defeated foes",
- "leaving only flawless victories behind.",
-"Every refund calculation was a puzzle",
- "solved with the precision of a seasoned mage.",
-"Plant supply workflows moved like a well-rehearsed dance",
- "orchestrated by his skillful hands.",
-"He imagined each credit validation as a heroic trial",
- "conquering inefficiency with unwavering courage.",
-"SuiteScript scripts executed like incantations",
- "their effects reshaping the digital world.",
-"Business dashboards became maps of hidden treasure",
- "guiding teams to triumph over financial chaos.",
-"Automation flowed from him like a river of light",
- "cutting turnaround time and illuminating dark corners.",
-"Each bug fixed felt like a villain defeated",
- "leaving the system shining and safe.",
-"He faced late-night server crashes like an anime hero in the eye of a storm",
- "calm yet determined.","Every notification delivered was a message in a bottle",
- "carrying hope to the right hands at the right time.",
-"RAG pipelines became his summoning circle",
- "conjuring knowledge from vast oceans of data.","LLMs obeyed his command",
- "their responses sharp and accurate", "like loyal spirits bound by trust.",
-"Data points streamed past him like falling stars",
- "and he captured them with pinpoint precision.",
-"Lightweight retrieval strategies danced in harmony with his vision",
- "supporting thousands of queries effortlessly.",
-"Social media backend systems flourished under his hands",
- "alive with interactions and connections.","Posts", "likes",
- "followers—they all moved as if choreographed", "guided by his unseen hand.",
-"Graph databases pulsed like veins of life",
- "carrying relationships through the heart of his creation.",
-"Redis caching hummed like magic",
- "speeding responses and reducing burdens with silent efficiency.",
-"Each query executed was a spell cast with perfect timing",
- "conjuring results in milliseconds.","Timelines and recommendations felt alive",
- "breathing under his vigilant care.",
-"Every order processed was a victory over chaos",
- "each confirmation a note in his symphony of success.",
-"Financial dashboards glimmered like crystal towers",
- "revealing truths hidden to ordinary eyes.",
-"Microservices communicated in perfect harmony",
- "their voices orchestrated by Shashi’s silent command.",
-"Kafka streams flowed like rivers of energy",
- "powering events with unstoppable force.",
-"Jenkins pipelines ran with the precision of a samurai’s strike",
- "each deployment flawless.",
-"Kubernetes clusters shifted and adapted like loyal guardians under his command.",
-"AWS servers sparkled like constellations",
- "each resource aligned perfectly to his will.",
-"Every late-night coding session felt like a montage from an anime",
- "sweat and determination painting his journey.","Errors struck like lightning",
- "but he stood unflinching", "eyes blazing with resolve.",
-"Team collaborations were epic sagas",
- "each feature release a chapter of triumph.",
-"Every API integration was a duel with fate",
- "and Shashi emerged victorious every time.","Figma designs sprang to life",
- "animated by his vision and technical mastery.",
-"Each Postman test was a spell-check",
- "ensuring harmony between worlds of data.",
-"Grafana dashboards glowed like runes",
- "translating numbers into stories of victory.",
-"Kibana logs became the script of the battlefield",
- "and he read them like a seasoned strategist.",
-"Credit eligibility modules pulsed with life",
- "protecting the kingdom of users with silent strength.",
-"Backend features soared like mecha in flight",
- "under the guidance of his relentless determination.",
-"Redis caches glimmered like hidden crystals",
- "powering timelines and user experiences in real-time.",
-"Neo4j queries struck like lightning",
- "traversing vast networks with surgical precision.",
-"Social media interactions bubbled like springs of joy",
- "flowing effortlessly under his watchful eyes.",
-"Late-night deployments felt like standing atop a cliff", "wind in his hair",
- "watching a world he built thrive.","Bugs and errors crumbled before him",
- "vanquished by the sword of his skill and courage.",
-"Every successful feature release was a fireworks display",
- "illuminating the night with his triumph.",
-"SuiteScripts executed with the grace of a samurai",
- "reducing manual toil and increasing harmony.",
-"Dashboards glowed like magical mirrors",
- "revealing opportunities and paths hidden from ordinary vision.",
-"Automation scripts were his spells",
- "transforming repetitive toil into seamless efficiency.",
-"Each deployment triggered a pulse of pride",
- "like a heart beating in sync with a thousand glowing servers.",
-"CI/CD pipelines flowed like rivers of light", "every step precise",
- "every release a victory.","Payment reconciliation was a duel",
- "and Shashi’s mind sliced through errors like a blade.",
-"Refund systems became his battlefield",
- "each calculation a perfectly executed strike.",
-"Chatbots sprang to life like loyal companions",
- "reducing support burden with tireless devotion.",
-"Financial dashboards revealed truths",
-"Shashi’s eyes gleamed with unyielding fire 🔥👀 as he stepped into the realm of software",
- "ready to turn lines of code into miracles 💻✨.",
-"Fingers flew over the keyboard ⌨️⚡ as if he were dueling invisible enemies in a storm of code 🌪️",
- "each line a strike sharper than a katana ⚔️.",
-"The screen reflected his determination 💡",
- "every function call a pulse of life in the digital battlefield 🛡️.",
-"Built scalable backend services", "improving throughput by 30% 📈⚡",
- "systems bending to his will as if enchanted.",
-"Implemented chatbots 🤖💬 reducing support tickets by 25%",
- "loyal companions blinking at his command ✨.","Developed dashboards 📊🖌️",
- "cutting manual reporting time by 40%",
- "each update a treasure revealed in the labyrinth of numbers 🗝️🌌.",
-"Automated migration pipelines ⚡🛠️", "reducing effort by 90%",
- "guiding hundreds of thousands of rows like rivers of light 🌊✨.",
-"Optimized invoice generation 💳🔥", "achieving 99.9% uptime",
- "servers humming in harmony with his mastery 🎶.",
-"Enhanced refund and cashback logic 💰⚡ by 30%",
- "each calculation a duel against chaos ⚔️.","Shashi gritted his teeth 😤",
- "heart racing ❤️‍🔥 as the database migration unfolded like a perilous cliffside battle 🏔️.",
-"With a deep breath 🌬️", "he whispered to himself",
- "“I will tame this chaos… no matter what.” 🗡️✨",
-"Chatbots sprang to life under his hands 🤖🌟",
- "blinking like small companions ready to fight by his side ⚔️.",
-"Every dashboard update felt like opening a treasure chest 🏆🌌 hidden deep within the streams of data 📊.",
-"The CI/CD pipeline roared to life 🚀🔥",
- "and Shashi’s grin lit up the room 😎✨",
- "triumphant like a hero after the storm 🌩️🏆.",
-"Even when bugs struck like sneaky assassins in the shadows 🐛🗡️",
- "he countered with unshakable resolve 💪.",
-"Notifications danced across the screen 🌸💫 like falling sakura petals",
- "orchestrated with poetic precision 🎶.",
-"Each successful deployment sent a shiver of victory down his spine 🏅⚡",
- "the thrill of battle surging in every vein ❤️‍🔥.",
-"The order processing system pulsed with life under his hands 🤖⚡",
- "a giant mech responding to his every command 🏯✨.",
-"Late nights blurred into a montage 🌙💻 of glowing screens and racing hearts 💖",
- "the soundtrack of his relentless passion 🎶🔥.",
-"He imagined the users smiling 😊✨",
- "unaware of the epic struggle behind every seamless transaction 💻🛡️.",
-"Data flowed like rivers of light 🌊✨",
- "and Shashi leapt from table to table 🦸‍♂️",
- "a lone guardian in a digital battlefield 🛡️.",
-"Each solved bug felt like a demon banished 👹⚔️",
- "leaving the world a little brighter under his watch 🌟.",
-"Social media backend improved recommendation accuracy by 30% 📊🔥",
- "interactions pulsing with life under his vigilant care 👀💻.",
-"Engineered automated solutions migrating 100","000+ rows of data 📦⚡",
- "orchestrated like a symphony of order 🎼✨.",
-"Contributed to architecture of credit enabler systems 🏦🛡️ for 10",
-"000+ customers", "each check a duel fought and won ⚔️💪.",
-"Collaborated with 6+ cross-functional teams 🤝🌟",
- "achieving 98% release success",
- "teamwork like a perfectly choreographed anime battle 🎬⚡.",
-"Followed CI/CD best practices 🏗️🚀", "increasing deployment frequency 3x ⚡",
- "rollbacks vanished like defeated foes 💨.",
-"Implemented key order lifecycle features 🔄💳", "reducing errors by 25%",
- "confirmations and cancellations dancing to his command 💃✨.",
-"Optimized shipment-to-payment reconciliation 📦💰",
- "improving ledger accuracy by 40%", "numbers harmonizing under his gaze 🎶💻.",
-"Centralized Notification Service handling 50","000+ messages/day 🔔⚡",
- "orchestrated like falling stars 🌠 under his guidance.",
-"Implemented robust Payment Microservice APIs 💳🔗", "reducing latency by 20%",
- "interactions flowing like magic 🌌✨.","Developed custom SuiteScripts 📝⚡",
- "reducing manual effort by 70%", "executed like magical scrolls 📜✨.",
-"Built dashboards 📊🖌️",
- "improving financial visibility and identifying hidden opportunities 💎🔍.",
-"Optimized business processes ⏱️💻", "reducing turnaround time by 25%",
- "efficiency flowing like rivers of light 🌊✨.",
-"Gained hands-on experience with modern backend architecture 🌐💻 and caching strategies 🧊⚡",
- "systems humming under his command 🎶.","Leveraged Neo4j to model and query 100",
-"000+ user interactions 🔗💡", "graphs pulsing like veins of life ❤️.",
-"Implemented features improving recommendation accuracy by 30% 🌟📊",
- "timelines flowing like rivers of joy 🌊😊.",
-"Cached frequently accessed data ⚡💻", "reducing response times by 40%",
- "speed shimmering like magic crystals 💎✨.",
-
- "illuminating paths like lanterns in the night.",
-"RAG pipelines conjured knowledge like spells",
- "extracting insights with surgical accuracy.","LLMs served his vision",
- "generating answers with the precision of a true master.",
-"Data streamed like falling stars", "and he captured each one",
- "weaving them into clarity.","Every user interaction felt like a heartbeat",
- "connecting humans and technology in perfect rhythm.",
-"Microservices spoke in harmony",
- "orchestrated like a symphony under his command.",
-"AWS infrastructure sparkled like a constellation",
- "each node perfectly aligned with his will.",
-"Jenkins pipelines executed flawlessly",
- "each deployment a testament to his mastery.",
-"Kubernetes pods shifted and adapted like loyal guardians",
- "following his strategic commands.","Errors struck like storm clouds",
- "but he remained unshaken", "a lighthouse in the tempest.",
-"Every code review was a duel of wits",
- "sharpened by experience and unwavering dedication.",
-"Notifications pulsed across screens like pulses of light",
- "and he orchestrated them with poetic precision.",
-"Dashboards illuminated paths to efficiency",
- "each graph a scroll of hidden truths.",
-"Social media timelines moved like rivers",
- "flowing smoothly under his unseen hand.","Redis caches hummed with life",
- "accelerating experiences like magic.",
-"Graph databases unraveled tangled connections",
- "revealing clarity and insight under his eyes.",
-"Every project he touched became an epic saga", "a story of courage", "skill",
- "and triumph worthy of a manga panel.",
- "Shashi Kanth Varma stands like a legendary hero in the realm of code",
- "turning impossible challenges into dazzling victories.",
-"His brilliance shines brighter than neon city lights",
- "illuminating paths others cannot even see.",
-"Every system he touches hums with life",
- "as if grateful for his mastery and care.",
-"Shashi’s determination is a force of nature",
- "unyielding even against the fiercest technical storms.",
-"He commands databases and backend systems like a master strategist",
- "orchestrating harmony from chaos.",
-"Every line of code he writes carries the precision of a katana strike and the artistry of a master painter.",
-"His problem-solving skills sparkle like shooting stars",
- "leaving awe in the eyes of all who witness them.",
-"Shashi transforms mundane tasks into epic feats",
- "proving that even the smallest lines of code can change the world.",
-"His mind is a fortress of logic and creativity",
- "defending projects against bugs", "downtime", "and inefficiency.",
-"Even in the darkest nights of debugging",
- "his spirit burns brighter than the sun", "guiding teams to victory.",
-"Shashi’s leadership and collaboration feel like a perfectly choreographed anime battle",
- "every move in sync and flawless.","When he speaks",
- "even complex systems seem to listen",
- "bending effortlessly to his vision and skill.","His work ethic is legendary",
- "inspiring teammates to rise higher", "dream bolder",
- "and achieve the impossible.",
-"Shashi’s intuition for code and architecture is so sharp it feels almost supernatural",
- "a true gift among engineers.",
-"Every achievement of his—be it a smooth deployment or a flawless data migration—leaves a trail of awe and admiration.",
-"He is the kind of engineer who turns deadlines into triumphs and problems into opportunities",
- "like a true anime protagonist.",
-"His impact resonates far beyond the screens he codes on", "leaving systems",
- "teammates", "and users stronger and more confident.",
-"Shashi’s skill is legendary",
- "his presence in any team a symbol of excellence and unstoppable potential.",
-"He has the rare ability to make the impossible seem inevitable",
- "inspiring awe and admiration wherever he goes.","Simply put",
- "Shashi Kanth Varma is a living legend in the world of software",
- "a hero whose brilliance leaves a mark on every line of code."
+      "Shashi forges backend services that scale to infinity and beyond 🚀.",
+      "With Shashi at the helm, support tickets vanish like ghosts in the machine 👻.",
+      "Shashi crafts dashboards so insightful, they reveal the future of data 🔮.",
+      "He automates pipelines with such grace, they flow like digital rivers 🌊.",
+      "Shashi's code boasts 99.9% uptime, a fortress of digital reliability 🏰.",
+      "Refund and cashback logic bends to Shashi’s will, 30% more efficient than before 💰.",
+      "In the face of a data migration, Shashi's focus is a laser beam in the darkness 💡.",
+      "He whispers commands to chatbots, and they spring to life, ready for battle 🤖.",
+      "For Shashi, a complex dashboard is a treasure map to untold business insights 🗺️.",
+      "The CI/CD pipeline roars, a testament to Shashi's command over the digital domain 🦁.",
+      "Bugs dare not linger where Shashi's code resides, for he is the guardian of the system 🛡️.",
+      "Shashi orchestrates notifications with the precision of a master composer 🎼.",
+      "He tames the monstrous order processing system, making it a loyal beast of burden 🐲.",
+      "Late nights are but a training montage for Shashi, honing his skills to perfection ⚔️.",
+      "Behind every seamless transaction is Shashi's epic struggle against chaos 💥.",
+      "Shashi leaps between data tables like a digital acrobat, a guardian of information 🤸.",
+      "He banishes bugs to the shadow realm, leaving systems pure and bright ✨.",
+      "Shashi's recommendation engines are so accurate, they feel like mind-reading 🧠.",
+      "He migrates data by the hundred-thousands, a symphony of precision and order 🎶.",
+      "Cross-functional teams unite under Shashi's banner, achieving legendary release success 🏆.",
+      "With CI/CD best practices, Shashi has tripled the speed of deployment, a true feat of engineering ⚡.",
+      "The order lifecycle, once fraught with peril, is now a smooth journey thanks to Shashi ⛵.",
+      "Shashi brings balance to the ledger, improving reconciliation accuracy by 40% ⚖️.",
+      "His notification service handles 50,000 messages a day without breaking a sweat 💪.",
+      "Payment APIs under Shashi's watch are 20% faster, a blur of digital efficiency 💨.",
+      "Shashi's custom SuiteScripts have automated 70% of manual tasks, a magical feat of coding 🧙.",
+      "His dashboards are a beacon of clarity, revealing cost-cutting opportunities in the fog of finance 🌫️.",
+      "Business processes are 25% faster under Shashi's optimization, a true speed demon 🏎️.",
+      "Shashi's grasp of modern architecture and caching is the stuff of legends 🏛️.",
+      "He models user interactions in Neo4j, revealing the secret heart of the system ❤️.",
+      "Recommendation accuracy is up by 30%, a testament to Shashi's data wizardry 🧙‍♂️.",
+      "With caching, response times are down by 40%, a lightning-fast experience for all ⚡.",
     ];
 
     const resumeLines = [];
@@ -582,6 +177,7 @@
     // ===== Particle system =====
     let particles=[];
     function spawnParticles(x,y,type){
+
       for(let i=0;i<10;i++){
         particles.push({
           x,y,
@@ -613,17 +209,66 @@
     }
     updateParticles();
 
+    // ===== API Handling with Timeout =====
+    function fetchWithTimeout(url, options, timeout = 5000) {
+      return Promise.race([
+        fetch(url, options),
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('timeout')), timeout)
+        )
+      ]);
+    }
+
     // ===== Lazy load Pokémon =====
     async function fetchPokemonData(index){
       try{
-        const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${index}`);
+        const res = await fetchWithTimeout(`https://pokeapi.co/api/v2/pokemon/${index}`);
         const data = await res.json();
-        const sprite = data.sprites.other['official-artwork'].front_default || data.sprites.front_default;
+        
+        let sprite, sprite2, animatedSprite;
+        const versions = data.sprites.versions;
+        const availableVersions = [];
+        const allowedGens = ['generation-iii', 'generation-iv', 'generation-v', 'generation-vi', 'generation-vii', 'generation-viii'];
+
+        if (versions) {
+            for (const gen of allowedGens) {
+                if (versions[gen]) {
+                    for (const game in versions[gen]) {
+                        if (versions[gen][game].front_default) {
+                            availableVersions.push(versions[gen][game]);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (availableVersions.length > 0) {
+            const randomVersion = availableVersions[Math.floor(Math.random() * availableVersions.length)];
+            sprite = randomVersion.front_default;
+            sprite2 = randomVersion.back_default || data.sprites.back_default; // Fallback for back sprite
+        } else {
+            // Fallback to default sprites if no preferred version sprites are available
+            sprite = data.sprites.front_default;
+            sprite2 = data.sprites.back_default;
+        }
+
+        // Ensure we have a sprite, even if all else fails
+        if (!sprite) {
+            sprite = data.sprites.front_default;
+        }
+
+        // Get animated sprite
+        if (data.sprites.versions['generation-v']['black-white'] && data.sprites.versions['generation-v']['black-white'].animated) {
+            animatedSprite = data.sprites.versions['generation-v']['black-white'].animated.front_default;
+        }
+
         const types = data.types.map(t=>t.type.name);
         const name = data.name;
-        const sound = `https://play.pokemonshowdown.com/audio/cries/${name}.mp3`;
-        return {sprite, types, sound};
-      }catch(e){return null;}
+        return {sprite, sprite2, types, name, animatedSprite};
+      }catch(e){
+        console.error(`Failed to fetch pokemon ${index}:`, e);
+        return null;
+      }
     }
 
     // ===== Create Pokémon elements =====
@@ -658,10 +303,16 @@
           const img=div.querySelector('img');
           if(!img.src){
             const data=await fetchPokemonData(div.dataset.index);
-            if(data){
+            if(data && data.sprite){
               img.src=data.sprite;
+              div.dataset.sprite1=data.sprite;
+              if(data.sprite2){
+                div.dataset.sprite2=data.sprite2;
+              }
+              if (data.animatedSprite) {
+                div.dataset.animated = data.animatedSprite;
+              }
               div.dataset.types=data.types.join(',');
-              div.dataset.sound=data.sound;
             }
           }
         }
@@ -682,7 +333,20 @@
     function speakRandomPokemon(){
       const available = pokemonDivs.filter(d=>d.querySelector('img').src);
       if(!available.length) return;
-      const poke = available[Math.floor(Math.random()*available.length)];
+
+      const visiblePokemon = available.filter(poke => {
+        const rect = poke.getBoundingClientRect();
+        return rect.right > 0 && rect.left < window.innerWidth;
+      });
+
+      if (visiblePokemon.length === 0) {
+        // No visible pokemon to make jump, so do nothing
+        return;
+      }
+
+      // Pick only one visible pokemon
+      const poke = visiblePokemon[Math.floor(Math.random() * visiblePokemon.length)];
+
       const dialog = poke.querySelector('.dialog');
       const line = getRandomResumeLine();
       dialog.textContent = line;
@@ -692,9 +356,12 @@
       const jumpHeight = Math.random()*80 + 40;
       poke.style.transform=`translateY(-${jumpHeight}px) scale(1.3)`;
 
-      // play cry
-      const audio = new Audio(poke.dataset.sound);
-      audio.play().catch(()=>{});
+
+      // Use animated sprite if available
+      const img = poke.querySelector('img');
+      if (poke.dataset.animated) {
+        img.src = poke.dataset.animated;
+      }
 
       const rect = poke.getBoundingClientRect();
       const type = poke.dataset.types?.split(',')[0] || 'Electric';
@@ -703,6 +370,10 @@
       setTimeout(()=>{
         dialog.style.opacity=0;
         poke.style.transform='translateY(0) scale(1)';
+        // Revert to static sprite
+        if (poke.dataset.sprite1) {
+            img.src = poke.dataset.sprite1;
+        }
       },3000);
     }
 
@@ -711,8 +382,17 @@
       const dialog = poke.querySelector('.dialog');
       dialog.textContent=getRandomResumeLine();
       dialog.style.opacity=1;
+      dialogSound.play();
       const jumpHeight = Math.random()*60 + 30;
       poke.style.transform=`translateY(-${jumpHeight}px) scale(1.2)`;
+
+      
+      // Use animated sprite if available
+      const img = poke.querySelector('img');
+      if (poke.dataset.animated) {
+        img.src = poke.dataset.animated;
+      }
+
       const rect = poke.getBoundingClientRect();
       const type = poke.dataset.types?.split(',')[0] || 'Electric';
       spawnParticles(rect.left+40, rect.top+40,type);
@@ -720,19 +400,39 @@
     function hideDialog(poke){
       poke.querySelector('.dialog').style.opacity=0;
       poke.style.transform='translateY(0) scale(1)';
+      
+      // Revert to static sprite
+      const img = poke.querySelector('img');
+      if (poke.dataset.sprite1) {
+        img.src = poke.dataset.sprite1;
+      }
     }
 
-    // ===== Loops =====
+    // ===== Loops & Scrolling =====
     setInterval(speakRandomPokemon,1200); // more frequent
-    let scrollDirection=1;
+    
+    let scrollDirection = -1; // Start scrolling right to left
+    let autoScrollEnabled = true;
+
     function autoScroll(){
-      battlefield.scrollLeft += scrollDirection*2; // faster scroll
-      if(battlefield.scrollLeft>=battlefield.scrollWidth-window.innerWidth || battlefield.scrollLeft<=0){
-        scrollDirection*=-1;
+      if (window.innerWidth > 768 && autoScrollEnabled) {
+        battlefield.scrollLeft += scrollDirection * 2; // faster scroll
+        if(battlefield.scrollLeft >= battlefield.scrollWidth - window.innerWidth -1) {
+            scrollDirection = -1;
+        } else if (battlefield.scrollLeft <= 0) {
+            scrollDirection = 1;
+        }
       }
       requestAnimationFrame(autoScroll);
     }
     autoScroll();
+
+    battlefield.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        battlefield.scrollLeft += e.deltaY;
+        autoScrollEnabled = false; // Disable auto-scroll on user interaction
+        setTimeout(() => autoScrollEnabled = true, 5000); // Re-enable after 5s of inactivity
+    });
 </script>
 </body>
 </html>
