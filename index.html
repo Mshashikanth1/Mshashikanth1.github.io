@@ -122,12 +122,24 @@
     const dialogSound = sfxr.toAudio(sfxr.generate("blipSelect"));
 
     // ===== Background Music =====
-    const backgroundAudio = new Audio('backGroudAudio.mp3');
+    const backgroundAudio = new Audio('https://raw.githubusercontent.com/Mshashikanth1/Mshashikanth1.github.io/main/backgroudAudio.mp3');
     backgroundAudio.loop = true;
     backgroundAudio.volume = 0.2; // Set a lower volume for background music
-    backgroundAudio.play().catch(e => {
-        console.log("Autoplay prevented. User interaction needed to play background music.", e);
-        // Optionally, add a UI element to allow user to start music
+    
+    let audioPlayed = false;
+    document.addEventListener('click', () => {
+        if (!audioPlayed) {
+            backgroundAudio.play().then(() => {
+                audioPlayed = true;
+            }).catch(e => {
+                console.error("Could not play background music on first interaction:", e);
+            });
+        }
+    }, { once: true }); // Use { once: true } to ensure it only runs once
+
+    backgroundAudio.addEventListener('error', (e) => {
+        console.error("Error with audio element:", e);
+        // Optionally, alert the user or display a message
     });
 
     // ===== Resume lines with anime-style emotion =====
